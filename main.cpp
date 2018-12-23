@@ -27,5 +27,8 @@ int main()
 	cout << "\n\nwhole grid shown by nodes\n" << endl;
 	mesh.showNodesinGrid();
 
+	cout << "\n\nwhole grid by elements id\n";
+	mesh.showElementsInGrid();
+
 	system("PAUSE");
 }

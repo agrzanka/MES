@@ -69,9 +69,18 @@ void Grid::prepareElements()
 	{
 		for (int indexH = 0; indexH < nH - 1; indexH++)
 		{
-			gridElmnts[indexH][indexL].set_id(indexH + indexL*nH);
+			gridElmnts[indexH][indexL].set_id(indexH + indexL*(nH - 1));
 
 		}
 	}
-	//this->nodes;
+}
+
+void Grid::showElementsInGrid()
+{
+	for (int h = nH - 2; h >= 0; h--)
+	{
+		for (int l = 0; l < nL - 1; l++)
+			cout << gridElmnts[h][l].get_id() << "\t";
+		cout << std::endl;
+	}
 }
