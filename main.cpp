@@ -3,7 +3,8 @@
 #include "Node.h"
 #include "Grid.h"
 #include "Elmnt.h"
-
+#include "IntegrationPoints.h"
+#include "ShapeFunctions.h"
 
 using namespace std;
 
@@ -13,7 +14,12 @@ int main()
 
 	double t = data.get_tot();
 
-	Grid mesh(data);
+	IntegrationPoints intPoints;
+	ShapeFunctions ShapeFun(intPoints);
+
+	ShapeFun.showShapeFunctions();
+
+	//	Grid mesh(data);
 	//	cout << "first one:" << endl;
 	//	cout << "id: " << mesh.nodes[0][0].get_id() << "\tx: " << mesh.nodes[0][0].get_x() << endl;
 	//	cout << "last one: " << endl;
@@ -24,16 +30,16 @@ int main()
 	//	cout << "id: " << mesh.nodes[2][3].get_id() << "\tx: " << mesh.nodes[2][3].get_x() << "\ty:  " << mesh.nodes[2][3].get_y() << endl;
 	//	cout << "id: " << mesh.nodes[5][2].get_id() << "\tx: " << mesh.nodes[5][2].get_x() << "\ty: " << mesh.nodes[5][2].get_y() << endl;
 
-	cout << "\n\nwhole grid shown by nodes\n" << endl;
-	mesh.showNodesinGrid();
+	//	cout << "\n\nwhole grid shown by nodes\n" << endl;
+	//	mesh.showNodesinGrid();
 
 	//	cout << "\nedges\n";
 	//	mesh.showNodesEdges();
 
-	cout << "\n\nwhole grid by elements id\n";
-	mesh.showElementsInGrid();
+	//	cout << "\n\nwhole grid by elements id\n";
+	//	mesh.showElementsInGrid();
 
-	cout << "\n\nshow 0 element\n";
+	/*	cout << "\n\nshow 0 element\n";
 	mesh.gridElmnts[0][0].showElement();
 
 	cout << "\nshow 1st element\n";
@@ -53,6 +59,7 @@ int main()
 
 	cout << "\nshow 14th element: \n";
 	mesh.gridElmnts[4][2].showElement();
+	*/
 
 	system("PAUSE");
 }
