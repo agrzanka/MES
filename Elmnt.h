@@ -7,7 +7,7 @@ class Elmnt {
 public:
 	int id = NULL;
 	Node nodeID[4];
-	bool edgeOfGrid = NULL;
+	//bool edgeOfGrid=NULL;
 
 	//public:
 
@@ -17,9 +17,11 @@ public:
 
 	void set_id(int id);
 	void set_nodes(Node n1, Node n2, Node n3, Node n4);
-	void set_edgeOfGrid(bool edge);
+	//void set_edgeOfGrid(bool edge);
 
 
 	int get_id();
-	bool is_edgeOfGrid();
+	//bool is_edgeOfGrid();
+
+	void showElement();
 };

@@ -24,6 +24,7 @@ public:
 
 	void prepareNodes();
 	void showNodesinGrid();
+	void showNodesEdges();
 
 	void prepareElements();
 	void showElementsInGrid();

@@ -2,12 +2,6 @@
 
 Node::Node(int id, double x, double y, double t, bool edge)
 {
-	/*this->id = id;
-	this->x = x;
-	this->y = y;
-	this->t = t;
-	this->edge = edge;*/
-
 	this->set_edge(edge);
 	this->set_id(id);
 	this->set_temperature(t);

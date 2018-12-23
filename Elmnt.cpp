@@ -1,5 +1,7 @@
 #include "Elmnt.h"
 
+using namespace std;
+
 Elmnt::Elmnt(int id, Node n1, Node n2, Node n3, Node n4)
 {
 	//this->set_edgeOfGrid(edge);
@@ -28,17 +30,23 @@ void Elmnt::set_nodes(Node n1, Node n2, Node n3, Node n4)
 	this->nodeID[2] = n3;
 	this->nodeID[3] = n4;
 }
-void Elmnt::set_edgeOfGrid(bool edge)
+/*void Elmnt::set_edgeOfGrid(bool edge)
 {
-	this->edgeOfGrid = edge;
-}
+this->edgeOfGrid = edge;
+}*/
 
 
 int Elmnt::get_id()
 {
 	return id;
 }
-bool Elmnt::is_edgeOfGrid()
+/*bool Elmnt::is_edgeOfGrid()
 {
-	return edgeOfGrid;
+return edgeOfGrid;
+}*/
+
+void Elmnt::showElement()
+{
+	cout << nodeID[0].get_id() << "\t" << nodeID[1].get_id() << "\t" << nodeID[2].get_id() << "\t" << nodeID[3].get_id() << endl;
+
 }

@@ -63,6 +63,17 @@ void Grid::showNodesinGrid()
 	}
 }
 
+void Grid::showNodesEdges()
+{
+	for (int h = nH - 1; h >= 0; h--)
+	{
+		for (int l = 0; l < nL; l++)
+			cout << nodes[h][l].is_edge() << "\t";
+		cout << std::endl;
+	}
+}
+
+
 void Grid::prepareElements()
 {
 	for (int indexL = 0; indexL < nL - 1; indexL++)
@@ -70,7 +81,7 @@ void Grid::prepareElements()
 		for (int indexH = 0; indexH < nH - 1; indexH++)
 		{
 			gridElmnts[indexH][indexL].set_id(indexH + indexL*(nH - 1));
-
+			gridElmnts[indexH][indexL].set_nodes(nodes[indexH][indexL], nodes[indexH][indexL + 1], nodes[indexH + 1][indexL + 1], nodes[indexH + 1][indexL]);
 		}
 	}
 }
