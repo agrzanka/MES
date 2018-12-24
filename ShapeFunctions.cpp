@@ -27,6 +27,11 @@ ShapeFunctions::ShapeFunctions(IntegrationPoints intPnts) //for four-nodes eleme
 	}
 }
 
+ShapeFunctions::ShapeFunctions()
+{
+
+}
+
 void ShapeFunctions::showShapeFunctions()
 {
 	for (int index = 0; index < 4; index++)

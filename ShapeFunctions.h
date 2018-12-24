@@ -13,5 +13,6 @@ public:
 	double dNdEta[4][4];	// derivative (d N / d eta) [shape function number][integration point number]
 
 	ShapeFunctions(IntegrationPoints intPoints);
+	ShapeFunctions();
 	void showShapeFunctions();
 };

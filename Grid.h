@@ -15,11 +15,12 @@ class Grid {
 	double deltaX = NULL;
 	double deltaY = NULL;
 	//insert the rest of needed data here
+	ShapeFunctions shapeFun;
 
 public:
 	Elmnt**gridElmnts = NULL;
 	Node **nodes = NULL;
-	Grid(Input_data data);
+	Grid(Input_data data, ShapeFunctions shapeFun);
 	~Grid();
 
 	void prepareNodes();

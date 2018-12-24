@@ -17,13 +17,14 @@ int main()
 	IntegrationPoints intPoints;
 	ShapeFunctions ShapeFun(intPoints);
 
-	ShapeFun.showShapeFunctions();
+	//	ShapeFun.showShapeFunctions();
 
-	//	Grid mesh(data);
+	//	Grid mesh(data, ShapeFun);
 	//	cout << "first one:" << endl;
 	//	cout << "id: " << mesh.nodes[0][0].get_id() << "\tx: " << mesh.nodes[0][0].get_x() << endl;
 	//	cout << "last one: " << endl;
-	//	cout << "id: " << mesh.nodes[int(data.get_num_of_nodes_H() - 1)][int(data.get_num_of_nodes_L() - 1)].get_id() << "\tx: " << mesh.nodes[int(data.get_num_of_nodes_H() - 1)][int(data.get_num_of_nodes_L() - 1)].get_x() <<
+	//	cout << "id: " << mesh.nodes[int(data.get_num_of_nodes_H() - 1)][int(data.get_num_of_nodes_L() - 1)].get_id() << "\tx: " 
+	//		<< mesh.nodes[int(data.get_num_of_nodes_H() - 1)][int(data.get_num_of_nodes_L() - 1)].get_x() <<
 	//		"\ty: " << mesh.nodes[int(data.get_num_of_nodes_H() - 1)][int(data.get_num_of_nodes_L() - 1)].get_y() << endl;
 
 
@@ -60,6 +61,11 @@ int main()
 	cout << "\nshow 14th element: \n";
 	mesh.gridElmnts[4][2].showElement();
 	*/
+
+	Node node1(0, 0, 0, 0, 0), node2(1, 0.025, 0, 0, 0), node3(2, 0.025, 0.025, 0, 0), node4(3, 0, 0.025, 0, 0);
+	Elmnt elmnt(0, node1, node2, node3, node4, ShapeFun);
+	elmnt.showElement();
+
 
 	system("PAUSE");
 }

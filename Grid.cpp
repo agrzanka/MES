@@ -5,8 +5,9 @@
 
 using namespace std;
 
-Grid::Grid(Input_data data)
+Grid::Grid(Input_data data, ShapeFunctions shapeFun)
 {
+	this->shapeFun = shapeFun;
 	this->H = data.get_height();
 	this->L = data.get_lenght();
 	this->nH = data.get_num_of_nodes_H();
@@ -82,6 +83,8 @@ void Grid::prepareElements()
 		{
 			gridElmnts[indexH][indexL].set_id(indexH + indexL*(nH - 1));
 			gridElmnts[indexH][indexL].set_nodes(nodes[indexH][indexL], nodes[indexH][indexL + 1], nodes[indexH + 1][indexL + 1], nodes[indexH + 1][indexL]);
+			gridElmnts[indexH][indexL].set_shapeFunctions(shapeFun);
+			gridElmnts[indexH][indexL].set_interpolationOfCoordinates();
 		}
 	}
 }
