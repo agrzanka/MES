@@ -85,6 +85,8 @@ void Grid::prepareElements()
 			gridElmnts[indexH][indexL].set_nodes(nodes[indexH][indexL], nodes[indexH][indexL + 1], nodes[indexH + 1][indexL + 1], nodes[indexH + 1][indexL]);
 			gridElmnts[indexH][indexL].set_shapeFunctions(shapeFun);
 			gridElmnts[indexH][indexL].set_interpolationOfCoordinates();
+			gridElmnts[indexH][indexL].set_transformationJacobian();
+			gridElmnts[indexH][indexL].set_detJ();
 		}
 	}
 }

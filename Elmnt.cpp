@@ -10,6 +10,8 @@ Elmnt::Elmnt(int id, Node n1, Node n2, Node n3, Node n4, ShapeFunctions shapeFun
 	this->set_nodes(n1, n2, n3, n4);
 	this->set_shapeFunctions(shapeFun);
 	this->set_interpolationOfCoordinates();
+	this->set_transformationJacobian();
+	this->set_detJ();
 }
 
 Elmnt::Elmnt()
@@ -71,6 +73,49 @@ void Elmnt::set_interpolationOfCoordinates()
 	}
 	cout << endl;
 }
+
+
+void Elmnt::set_transformationJacobian()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		double tmpJxKSI = 0;	//dx/dksi
+		double tmpJxETA = 0;	//dx/deta
+		double tmpJyKSI = 0;	//dy/dksi
+		double tmpJyETA = 0;	//dy/deta
+		for (int index = 0; index < 4; index++)
+		{
+			tmpJxKSI += shapeFun.dNdKsi[index][i] * nodeID[index].get_x();
+			tmpJxETA += shapeFun.dNdEta[index][i] * nodeID[index].get_x();
+			tmpJyKSI += shapeFun.dNdKsi[index][i] * nodeID[index].get_y();
+			tmpJyETA += shapeFun.dNdEta[index][i] * nodeID[index].get_y();
+		}
+		this->transfJacobian[i][0][0] = tmpJxKSI;
+		this->transfJacobian[i][0][1] = tmpJxETA;
+		this->transfJacobian[i][1][0] = tmpJyKSI;
+		this->transfJacobian[i][1][1] = tmpJyETA;
+
+
+	}
+	cout << "\nTRANSFORMATION with JACOBIAN";
+	for (int ip = 0; ip < 4; ip++)
+	{
+		cout << "\n" << ip << " integration point";
+		cout << "\n1-1:\t" << transfJacobian[ip][0][0];
+		cout << "\n1-2:\t" << transfJacobian[ip][0][1];
+		cout << "\n2-1:\t" << transfJacobian[ip][1][0];
+		cout << "\n2-2:\t" << transfJacobian[ip][1][1];
+	}
+}
+void Elmnt::set_detJ()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		this->detJ[i] = ((transfJacobian[i][0][0] * transfJacobian[i][1][1]) - (transfJacobian[i][0][1] * transfJacobian[i][1][0]));
+	}
+	cout << "\ndetJ 1: " << detJ[0] << "\tdetJ 2: " << detJ[1] << "\tdetJ 3: " << detJ[2] << "\tdetJ 4: " << detJ[3] << endl;
+}
+
 
 void Elmnt::showElement()
 {

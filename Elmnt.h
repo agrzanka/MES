@@ -11,9 +11,12 @@ public:
 	ShapeFunctions shapeFun;
 	//interpolation of coordinates:
 	double xp[4], yp[4];
-	//bool edgeOfGrid=NULL;
 
-	//public:
+	double transfJacobian[4][2][2]; //coordinates transformation with Jacobian -four matrixes- [integration point][0:x, 1:y][0:ksi, 1:eta]
+	double detJ[4];//det[J] -determinants of Jacobian matrixes above, for each of integration points  [integration point]
+				   //bool edgeOfGrid=NULL;
+
+				   //public:
 
 	Elmnt(int id, Node n1, Node n2, Node n3, Node n4, ShapeFunctions shapeFun);
 	Elmnt();
@@ -30,6 +33,9 @@ public:
 
 	void set_shapeFunctions(ShapeFunctions shapeFun);
 	void set_interpolationOfCoordinates();
+
+	void set_transformationJacobian();
+	void set_detJ();
 
 	void showElement();
 };
