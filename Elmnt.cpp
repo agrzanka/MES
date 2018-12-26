@@ -91,8 +91,8 @@ void Elmnt::set_transformationJacobian()
 			tmpJyETA += shapeFun.dNdEta[index][i] * nodeID[index].get_y();
 		}
 		this->transfJacobian[i][0][0] = tmpJxKSI;
-		this->transfJacobian[i][0][1] = tmpJxETA;
-		this->transfJacobian[i][1][0] = tmpJyKSI;
+		this->transfJacobian[i][0][1] = tmpJyKSI;
+		this->transfJacobian[i][1][0] = tmpJxETA;
 		this->transfJacobian[i][1][1] = tmpJyETA;
 
 
