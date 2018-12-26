@@ -12,6 +12,7 @@ Elmnt::Elmnt(int id, Node n1, Node n2, Node n3, Node n4, ShapeFunctions shapeFun
 	this->set_interpolationOfCoordinates();
 	this->set_transformationJacobian();
 	this->set_detJ();
+	this->set_revJacDivDetJ();
 }
 
 Elmnt::Elmnt()
@@ -116,6 +117,20 @@ void Elmnt::set_detJ()
 	cout << "\ndetJ 1: " << detJ[0] << "\tdetJ 2: " << detJ[1] << "\tdetJ 3: " << detJ[2] << "\tdetJ 4: " << detJ[3] << endl;
 }
 
+void Elmnt::set_revJacDivDetJ()
+{
+	cout << "\n\nreverse Jacobian divided by determinant f Jacobi matrix\n";
+	for (int index = 0; index < 4; index++)
+	{
+		revJacDivDetJ[index][0][0] = (transfJacobian[index][1][1] / detJ[index]);
+		revJacDivDetJ[index][0][1] = -(transfJacobian[index][0][1] / detJ[index]);
+		revJacDivDetJ[index][1][0] = -(transfJacobian[index][1][0] / detJ[index]);
+		revJacDivDetJ[index][1][1] = (transfJacobian[index][0][0] / detJ[index]);
+
+		cout << index << " integration point: \n" << revJacDivDetJ[index][0][0] << "\t" << revJacDivDetJ[index][0][1];
+		cout << "\t" << revJacDivDetJ[index][1][0] << "\t" << revJacDivDetJ[index][1][1] << endl;
+	}
+}
 
 void Elmnt::showElement()
 {
