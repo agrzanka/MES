@@ -13,6 +13,8 @@ Elmnt::Elmnt(int id, Node n1, Node n2, Node n3, Node n4, ShapeFunctions shapeFun
 	this->set_transformationJacobian();
 	this->set_detJ();
 	this->set_revJacDivDetJ();
+	this->set_dNdX();
+	this->set_dNdY();
 }
 
 Elmnt::Elmnt()
@@ -131,6 +133,37 @@ void Elmnt::set_revJacDivDetJ()
 		cout << "\t" << revJacDivDetJ[index][1][0] << "\t" << revJacDivDetJ[index][1][1] << endl;
 	}
 }
+
+void Elmnt::set_dNdX()
+{
+	cout << "\nndN/dx matrix:\n";
+
+	for (int NSF = 0; NSF < 4; NSF++)		//NSF = ShapeFunction number
+	{
+		cout << "\nN" << NSF << ":\n";
+		for (int IP = 0; IP < 4; IP++)		//IP = Integration Point number
+		{
+			dNdX[NSF][IP] = revJacDivDetJ[IP][0][0] * shapeFun.dNdKsi[NSF][IP] + revJacDivDetJ[IP][0][1] * shapeFun.dNdEta[NSF][IP];
+			cout << dNdX[NSF][IP] << "\t";
+		}
+	}
+}
+
+void Elmnt::set_dNdY()
+{
+	cout << "\nndN/dy matrix:\n";
+
+	for (int NSF = 0; NSF < 4; NSF++)		//NSF = ShapeFunction number
+	{
+		cout << "\nN" << NSF << ":\n";
+		for (int IP = 0; IP < 4; IP++)		//IP = Integration Point number
+		{
+			dNdX[NSF][IP] = revJacDivDetJ[IP][1][0] * shapeFun.dNdKsi[NSF][IP] + revJacDivDetJ[IP][1][1] * shapeFun.dNdEta[NSF][IP];
+			cout << dNdX[NSF][IP] << "\t";
+		}
+	}
+}
+
 
 void Elmnt::showElement()
 {
