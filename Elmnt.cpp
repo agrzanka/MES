@@ -223,7 +223,19 @@ void Elmnt::set_matrixH()
 			ip2condH[i][j] = k*(ip2xHdetJ[i][j] + ip2yHdetJ[i][j]);
 			ip3condH[i][j] = k*(ip3xHdetJ[i][j] + ip3yHdetJ[i][j]);
 			ip4condH[i][j] = k*(ip4xHdetJ[i][j] + ip4yHdetJ[i][j]);
+
+			matrixH[i][j] = ip1condH[i][j] + ip2condH[i][j] + ip3condH[i][j] + ip4condH[i][j];
 		}
+	}
+
+	cout << "\n\n\t\tMATRIX H\n";
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			cout << matrixH[i][j] << "\t";
+		}
+		cout << "\n";
 	}
 
 	/*cout << "\nIP=1, {dN/dx}*{dN/dx}Transposed:\n\n";
@@ -386,49 +398,45 @@ void Elmnt::set_matrixH()
 	cout << endl;
 	}*/
 
-	cout << "\nIP=1, conductivity*({dN/dx}*{dN/dx}Transposed*detJ + {dN/dy}*{dN/dy}Transposed*detJ:\n\n";
+	/*cout << "\nIP=1, conductivity*({dN/dx}*{dN/dx}Transposed*detJ + {dN/dy}*{dN/dy}Transposed*detJ:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 4; j++)
-		{
-			cout << ip1condH[i][j] << "\t";
-		}
-		cout << "\n";
+	for (int j = 0; j < 4; j++)
+	{
+	cout << ip1condH[i][j] << "\t";
+	}
+	cout << "\n";
 	}
 
 	cout << "\nIP=2, conductivity*({dN/dx}*{dN/dx}Transposed*detJ + {dN/dy}*{dN/dy}Transposed*detJ:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 4; j++)
-		{
-			cout << ip2condH[i][j] << "\t";
-		}
-		cout << endl;
+	for (int j = 0; j < 4; j++)
+	{
+	cout << ip2condH[i][j] << "\t";
+	}
+	cout << endl;
 	}
 
 	cout << "\nIP=3, conductivity*({dN/dx}*{dN/dx}Transposed*detJ + {dN/dy}*{dN/dy}Transposed*detJ:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 4; j++)
-		{
-			cout << ip3condH[i][j] << "\t";
-		}
-		cout << endl;
+	for (int j = 0; j < 4; j++)
+	{
+	cout << ip3condH[i][j] << "\t";
+	}
+	cout << endl;
 	}
 
 	cout << "\nIP=4, conductivity*({dN/dx}*{dN/dx}Transposed*detJ + {dN/dy}*{dN/dy}Transposed*detJ:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 4; j++)
-		{
-			cout << ip4condH[i][j] << "\t";
-		}
-		cout << endl;
+	for (int j = 0; j < 4; j++)
+	{
+	cout << ip4condH[i][j] << "\t";
 	}
-
-
-
-
+	cout << endl;
+	}*/
 
 	//delete ip1xH, ip1xH, ip2xH, ip3xH, ip4xH, ip1yH, ip2yH, ip3yH, ip4yH;
 	//delete ip1xHdetJ, ip2xHdetJ, ip3xHdetJ, ip4xHdetJ, ip1yHdetJ, ip2yHdetJ, ip3yHdetJ, ip4yHdetJ;
