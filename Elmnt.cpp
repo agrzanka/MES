@@ -15,6 +15,7 @@ Elmnt::Elmnt(int id, Node n1, Node n2, Node n3, Node n4, ShapeFunctions shapeFun
 	this->set_revJacDivDetJ();
 	this->set_dNdX();
 	this->set_dNdY();
+	this->set_matrixH();
 }
 
 Elmnt::Elmnt()
@@ -164,6 +165,274 @@ void Elmnt::set_dNdY()
 	}
 }
 
+void Elmnt::set_matrixH()
+{
+	//=========== auxiliary tabs ================== 
+	//matrixes below: vector{dN/dx} multiplied by transposed vector {dN/dx} ip1 stands for Integration point no.1 etc.
+	double ip1xH[4][4];
+	double ip2xH[4][4];
+	double ip3xH[4][4];
+	double ip4xH[4][4];
+	//matrixes below: vector{dN/dy} multiplied by transposed vector {dN/dy} ip1 stands for Integration point no.1 etc.
+	double ip1yH[4][4];
+	double ip2yH[4][4];
+	double ip3yH[4][4];
+	double ip4yH[4][4];
+	//matrixes below: matrixes from above multiplied by detJ
+	double ip1xHdetJ[4][4];
+	double ip2xHdetJ[4][4];
+	double ip3xHdetJ[4][4];
+	double ip4xHdetJ[4][4];
+	double ip1yHdetJ[4][4];
+	double ip2yHdetJ[4][4];
+	double ip3yHdetJ[4][4];
+	double ip4yHdetJ[4][4];
+	//matrixes below: conductivity*({dN/dx}*{dN/dx}Transposed*detJ + {dN/dy}*{dN/dy}Transposed*detJ)
+	double ip1condH[4][4];
+	double ip2condH[4][4];
+	double ip3condH[4][4];
+	double ip4condH[4][4];
+
+	//========== filling auxiliary tabs ==============
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			ip1xH[i][j] = dNdX[i][0] * dNdX[j][0];
+			//cout << "\n" << dNdX[i][0] << " * " << dNdX[j][0];
+			ip2xH[i][j] = dNdX[i][1] * dNdX[j][1];
+			ip3xH[i][j] = dNdX[i][2] * dNdX[j][2];
+			ip4xH[i][j] = dNdX[i][3] * dNdX[j][3];
+
+			ip1yH[i][j] = dNdY[i][0] * dNdY[j][0];
+			ip2yH[i][j] = dNdY[i][1] * dNdY[j][1];
+			ip3yH[i][j] = dNdY[i][2] * dNdY[j][2];
+			ip4yH[i][j] = dNdY[i][3] * dNdY[j][3];
+
+			ip1xHdetJ[i][j] = ip1xH[i][j] * detJ[0];
+			ip2xHdetJ[i][j] = ip2xH[i][j] * detJ[1];
+			ip3xHdetJ[i][j] = ip3xH[i][j] * detJ[2];
+			ip4xHdetJ[i][j] = ip4xH[i][j] * detJ[3];
+
+			ip1yHdetJ[i][j] = ip1yH[i][j] * detJ[0];
+			ip2yHdetJ[i][j] = ip2yH[i][j] * detJ[1];
+			ip3yHdetJ[i][j] = ip3yH[i][j] * detJ[2];
+			ip4yHdetJ[i][j] = ip4yH[i][j] * detJ[3];
+
+			ip1condH[i][j] = k*(ip1xHdetJ[i][j] + ip1yHdetJ[i][j]);
+			ip2condH[i][j] = k*(ip2xHdetJ[i][j] + ip2yHdetJ[i][j]);
+			ip3condH[i][j] = k*(ip3xHdetJ[i][j] + ip3yHdetJ[i][j]);
+			ip4condH[i][j] = k*(ip4xHdetJ[i][j] + ip4yHdetJ[i][j]);
+		}
+	}
+
+	/*cout << "\nIP=1, {dN/dx}*{dN/dx}Transposed:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+	for (int j = 0; j < 4; j++)
+	{
+	cout << ip1xH[i][j] << "\t";
+	}
+	cout << "\n";
+	}
+
+	cout << "\nIP=2, {dN/dx}*{dN/dx}Transposed:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+	for (int j = 0; j < 4; j++)
+	{
+	cout << ip2xH[i][j] << "\t";
+	}
+	cout << endl;
+	}
+
+	cout << "\nIP=3, {dN/dx}*{dN/dx}Transposed:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+	for (int j = 0; j < 4; j++)
+	{
+	cout << ip3xH[i][j] << "\t";
+	}
+	cout << endl;
+	}
+
+	cout << "\nIP=4, {dN/dx}*{dN/dx}Transposed:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+	for (int j = 0; j < 4; j++)
+	{
+	cout << ip4xH[i][j] << "\t";
+	}
+	cout << endl;
+	}*/
+
+	/*cout << "\nIP=1, {dN/dy}*{dN/dy}Transposed:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+	for (int j = 0; j < 4; j++)
+	{
+	cout << ip1yH[i][j] << "\t";
+	}
+	cout << "\n";
+	}
+
+	cout << "\nIP=2, {dN/dy}*{dN/dy}Transposed:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+	for (int j = 0; j < 4; j++)
+	{
+	cout << ip2yH[i][j] << "\t";
+	}
+	cout << endl;
+	}
+
+	cout << "\nIP=3, {dN/dy}*{dN/dy}Transposed:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+	for (int j = 0; j < 4; j++)
+	{
+	cout << ip3yH[i][j] << "\t";
+	}
+	cout << endl;
+	}
+
+	cout << "\nIP=4, {dN/dy}*{dN/dy}Transposed:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+	for (int j = 0; j < 4; j++)
+	{
+	cout << ip4yH[i][j] << "\t";
+	}
+	cout << endl;
+	}*/
+
+	/*cout << "\nIP=1, {dN/dx}*{dN/dx}Transposed*detJ:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+	for (int j = 0; j < 4; j++)
+	{
+	cout << ip1xHdetJ[i][j] << "\t";
+	}
+	cout << "\n";
+	}
+
+	cout << "\nIP=2, {dN/dx}*{dN/dx}Transposed*detJ:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+	for (int j = 0; j < 4; j++)
+	{
+	cout << ip2xHdetJ[i][j] << "\t";
+	}
+	cout << endl;
+	}
+
+	cout << "\nIP=3, {dN/dx}*{dN/dx}Transposed*detJ:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+	for (int j = 0; j < 4; j++)
+	{
+	cout << ip3xHdetJ[i][j] << "\t";
+	}
+	cout << endl;
+	}
+
+	cout << "\nIP=4, {dN/dx}*{dN/dx}Transposed*detJ:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+	for (int j = 0; j < 4; j++)
+	{
+	cout << ip4xHdetJ[i][j] << "\t";
+	}
+	cout << endl;
+	}
+
+	cout << "\nIP=1, {dN/dy}*{dN/dy}Transposed*detJ:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+	for (int j = 0; j < 4; j++)
+	{
+	cout << ip1yHdetJ[i][j] << "\t";
+	}
+	cout << "\n";
+	}
+
+	cout << "\nIP=2, {dN/dy}*{dN/dy}Transposed*detJ:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+	for (int j = 0; j < 4; j++)
+	{
+	cout << ip2yHdetJ[i][j] << "\t";
+	}
+	cout << endl;
+	}
+
+	cout << "\nIP=3, {dN/dy}*{dN/dy}Transposed*detJ:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+	for (int j = 0; j < 4; j++)
+	{
+	cout << ip3yHdetJ[i][j] << "\t";
+	}
+	cout << endl;
+	}
+
+	cout << "\nIP=4, {dN/dy}*{dN/dy}Transposed*detJ:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+	for (int j = 0; j < 4; j++)
+	{
+	cout << ip4yHdetJ[i][j] << "\t";
+	}
+	cout << endl;
+	}*/
+
+	cout << "\nIP=1, conductivity*({dN/dx}*{dN/dx}Transposed*detJ + {dN/dy}*{dN/dy}Transposed*detJ:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			cout << ip1condH[i][j] << "\t";
+		}
+		cout << "\n";
+	}
+
+	cout << "\nIP=2, conductivity*({dN/dx}*{dN/dx}Transposed*detJ + {dN/dy}*{dN/dy}Transposed*detJ:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			cout << ip2condH[i][j] << "\t";
+		}
+		cout << endl;
+	}
+
+	cout << "\nIP=3, conductivity*({dN/dx}*{dN/dx}Transposed*detJ + {dN/dy}*{dN/dy}Transposed*detJ:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			cout << ip3condH[i][j] << "\t";
+		}
+		cout << endl;
+	}
+
+	cout << "\nIP=4, conductivity*({dN/dx}*{dN/dx}Transposed*detJ + {dN/dy}*{dN/dy}Transposed*detJ:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			cout << ip4condH[i][j] << "\t";
+		}
+		cout << endl;
+	}
+
+
+
+
+
+	//delete ip1xH, ip1xH, ip2xH, ip3xH, ip4xH, ip1yH, ip2yH, ip3yH, ip4yH;
+	//delete ip1xHdetJ, ip2xHdetJ, ip3xHdetJ, ip4xHdetJ, ip1yHdetJ, ip2yHdetJ, ip3yHdetJ, ip4yHdetJ;
+}
 
 void Elmnt::showElement()
 {
