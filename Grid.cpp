@@ -91,6 +91,7 @@ void Grid::prepareElements()
 			gridElmnts[indexH][indexL].set_dNdX();
 			gridElmnts[indexH][indexL].set_dNdY();
 			gridElmnts[indexH][indexL].set_matrixH();
+			gridElmnts[indexH][indexL].set_matrixC();
 		}
 	}
 }

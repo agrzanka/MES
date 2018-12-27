@@ -16,6 +16,7 @@ Elmnt::Elmnt(int id, Node n1, Node n2, Node n3, Node n4, ShapeFunctions shapeFun
 	this->set_dNdX();
 	this->set_dNdY();
 	this->set_matrixH();
+	this->set_matrixC();
 }
 
 Elmnt::Elmnt()
@@ -440,6 +441,76 @@ void Elmnt::set_matrixH()
 
 	//delete ip1xH, ip1xH, ip2xH, ip3xH, ip4xH, ip1yH, ip2yH, ip3yH, ip4yH;
 	//delete ip1xHdetJ, ip2xHdetJ, ip3xHdetJ, ip4xHdetJ, ip1yHdetJ, ip2yHdetJ, ip3yHdetJ, ip4yHdetJ;
+}
+
+void Elmnt::set_matrixC()
+{
+	double auxiliaryMatrix[4][4][4]; //[integration point][][]
+
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			auxiliaryMatrix[0][i][j] = shapeFun.N[i][0] * shapeFun.N[j][0] * detJ[0] * c*ro;
+			auxiliaryMatrix[1][i][j] = shapeFun.N[i][1] * shapeFun.N[j][1] * detJ[1] * c*ro;
+			auxiliaryMatrix[2][i][j] = shapeFun.N[i][2] * shapeFun.N[j][2] * detJ[2] * c*ro;
+			auxiliaryMatrix[3][i][j] = shapeFun.N[i][3] * shapeFun.N[j][3] * detJ[3] * c*ro;
+			matrixC[i][j] = auxiliaryMatrix[0][i][j] + auxiliaryMatrix[1][i][j] + auxiliaryMatrix[2][i][j] + auxiliaryMatrix[3][i][j];
+		}
+	}
+
+
+	cout << "\n\nAUXILIARY MATRIXES FOR C MATRIX\n";
+	cout << "integration point number 1:\n";
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			cout << auxiliaryMatrix[0][i][j] << "\t";
+		}
+		cout << endl;
+	}
+
+	cout << "integration point number 2:\n";
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			cout << auxiliaryMatrix[1][i][j] << "\t";
+		}
+		cout << endl;
+	}
+
+	cout << "integration point number 3: \n";
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			cout << auxiliaryMatrix[2][i][j] << "\t";
+		}
+		cout << endl;
+	}
+	cout << "integration point number 4:\n";
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			cout << auxiliaryMatrix[3][i][j] << "\t";
+		}
+		cout << endl;
+	}
+
+	cout << "\n\nMATRIX C:\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			cout << matrixC[i][j] << "\t";
+		}
+		cout << endl;
+	}
+
+
 }
 
 void Elmnt::showElement()

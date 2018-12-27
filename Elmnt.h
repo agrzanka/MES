@@ -12,7 +12,9 @@ public:
 	//interpolation of coordinates:
 	double xp[4], yp[4];
 
-	double k = 30;
+	double k = 30;//conductivity
+	double c = 700;
+	double ro = 7800;
 
 	double transfJacobian[4][2][2]; //coordinates transformation with Jacobian -four matrixes- [integration point][0:ksi, 1:eta][0:x, 1:y]
 	double detJ[4];//det[J] -determinants of Jacobian matrixes above, for each of integration points  [integration point]
@@ -22,6 +24,7 @@ public:
 	double dNdY[4][4];// derivative (d N / d y) [shape function number][integration point number]
 
 	double matrixH[4][4];
+	double matrixC[4][4];
 
 	//bool edgeOfGrid=NULL;
 
@@ -51,6 +54,7 @@ public:
 	void set_dNdY();
 
 	void set_matrixH();
+	void set_matrixC();
 
 	void showElement();
 };
