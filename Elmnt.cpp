@@ -102,15 +102,15 @@ void Elmnt::set_transformationJacobian()
 
 
 	}
-	cout << "\nTRANSFORMATION with JACOBIAN";
+	/*cout << "\nTRANSFORMATION with JACOBIAN";
 	for (int ip = 0; ip < 4; ip++)
 	{
-		cout << "\n" << ip << " integration point";
-		cout << "\n1-1:\t" << transfJacobian[ip][0][0];
-		cout << "\n1-2:\t" << transfJacobian[ip][0][1];
-		cout << "\n2-1:\t" << transfJacobian[ip][1][0];
-		cout << "\n2-2:\t" << transfJacobian[ip][1][1];
-	}
+	cout << "\n" << ip << " integration point";
+	cout << "\n1-1:\t" << transfJacobian[ip][0][0];
+	cout << "\n1-2:\t" <<transfJacobian[ip][0][1];
+	cout << "\n2-1:\t"<< transfJacobian[ip][1][0];
+	cout << "\n2-2:\t" << transfJacobian[ip][1][1];
+	}*/
 }
 void Elmnt::set_detJ()
 {
@@ -118,12 +118,12 @@ void Elmnt::set_detJ()
 	{
 		this->detJ[i] = ((transfJacobian[i][0][0] * transfJacobian[i][1][1]) - (transfJacobian[i][0][1] * transfJacobian[i][1][0]));
 	}
-	cout << "\ndetJ 1: " << detJ[0] << "\tdetJ 2: " << detJ[1] << "\tdetJ 3: " << detJ[2] << "\tdetJ 4: " << detJ[3] << endl;
+	//cout << "\ndetJ 1: " << detJ[0] << "\tdetJ 2: " << detJ[1] << "\tdetJ 3: " << detJ[2] << "\tdetJ 4: " << detJ[3] << endl;
 }
 
 void Elmnt::set_revJacDivDetJ()
 {
-	cout << "\n\nreverse Jacobian divided by determinant f Jacobi matrix\n";
+	//cout << "\n\nreverse Jacobian divided by determinant f Jacobi matrix\n";
 	for (int index = 0; index < 4; index++)
 	{
 		revJacDivDetJ[index][0][0] = (transfJacobian[index][1][1] / detJ[index]);
@@ -131,37 +131,37 @@ void Elmnt::set_revJacDivDetJ()
 		revJacDivDetJ[index][1][0] = -(transfJacobian[index][1][0] / detJ[index]);
 		revJacDivDetJ[index][1][1] = (transfJacobian[index][0][0] / detJ[index]);
 
-		cout << index << " integration point: \n" << revJacDivDetJ[index][0][0] << "\t" << revJacDivDetJ[index][0][1];
-		cout << "\t" << revJacDivDetJ[index][1][0] << "\t" << revJacDivDetJ[index][1][1] << endl;
+		//cout<< index<<" integration point: \n"<< revJacDivDetJ[index][0][0]<<"\t"<<revJacDivDetJ[index][0][1];
+		//cout << "\t" << revJacDivDetJ[index][1][0] << "\t" << revJacDivDetJ[index][1][1] << endl;
 	}
 }
 
 void Elmnt::set_dNdX()
 {
-	cout << "\nndN/dx matrix:\n";
+	//cout << "\nndN/dx matrix:\n";
 
 	for (int NSF = 0; NSF < 4; NSF++)		//NSF = ShapeFunction number
 	{
-		cout << "\nN" << NSF << ":\n";
+		//	cout << "\nN" << NSF << ":\n";
 		for (int IP = 0; IP < 4; IP++)		//IP = Integration Point number
 		{
 			dNdX[NSF][IP] = revJacDivDetJ[IP][0][0] * shapeFun.dNdKsi[NSF][IP] + revJacDivDetJ[IP][0][1] * shapeFun.dNdEta[NSF][IP];
-			cout << dNdX[NSF][IP] << "\t";
+			//	cout << dNdX[NSF][IP] << "\t";
 		}
 	}
 }
 
 void Elmnt::set_dNdY()
 {
-	cout << "\nndN/dy matrix:\n";
+	//cout << "\nndN/dy matrix:\n";
 
 	for (int NSF = 0; NSF < 4; NSF++)		//NSF = ShapeFunction number
 	{
-		cout << "\nN" << NSF << ":\n";
+		//	cout << "\nN" << NSF << ":\n";
 		for (int IP = 0; IP < 4; IP++)		//IP = Integration Point number
 		{
-			dNdX[NSF][IP] = revJacDivDetJ[IP][1][0] * shapeFun.dNdKsi[NSF][IP] + revJacDivDetJ[IP][1][1] * shapeFun.dNdEta[NSF][IP];
-			cout << dNdX[NSF][IP] << "\t";
+			dNdY[NSF][IP] = revJacDivDetJ[IP][1][0] * shapeFun.dNdKsi[NSF][IP] + revJacDivDetJ[IP][1][1] * shapeFun.dNdEta[NSF][IP];
+			//cout << dNdY[NSF][IP] << "\t";
 		}
 	}
 }
@@ -170,29 +170,61 @@ void Elmnt::set_matrixH()
 {
 	//=========== auxiliary tabs ================== 
 	//matrixes below: vector{dN/dx} multiplied by transposed vector {dN/dx} ip1 stands for Integration point no.1 etc.
-	double ip1xH[4][4];
-	double ip2xH[4][4];
-	double ip3xH[4][4];
-	double ip4xH[4][4];
+	double** ip1xH = new double *[4];
+	double **ip2xH = new double*[4];
+	double** ip3xH = new double*[4];
+	double** ip4xH = new double*[4];
+	for (int i = 0; i < 4; i++)
+	{
+		ip1xH[i] = new double[4];
+		ip2xH[i] = new double[4];
+		ip3xH[i] = new double[4];
+		ip4xH[i] = new double[4];
+	}
 	//matrixes below: vector{dN/dy} multiplied by transposed vector {dN/dy} ip1 stands for Integration point no.1 etc.
-	double ip1yH[4][4];
-	double ip2yH[4][4];
-	double ip3yH[4][4];
-	double ip4yH[4][4];
+	double** ip1yH = new double *[4];
+	double** ip2yH = new double*[4];
+	double** ip3yH = new double*[4];
+	double** ip4yH = new double*[4];
+	for (int i = 0; i < 4; i++)
+	{
+		ip1yH[i] = new double[4];
+		ip2yH[i] = new double[4];
+		ip3yH[i] = new double[4];
+		ip4yH[i] = new double[4];
+	}
 	//matrixes below: matrixes from above multiplied by detJ
-	double ip1xHdetJ[4][4];
-	double ip2xHdetJ[4][4];
-	double ip3xHdetJ[4][4];
-	double ip4xHdetJ[4][4];
-	double ip1yHdetJ[4][4];
-	double ip2yHdetJ[4][4];
-	double ip3yHdetJ[4][4];
-	double ip4yHdetJ[4][4];
+	double** ip1xHdetJ = new double*[4];
+	double** ip2xHdetJ = new double*[4];
+	double** ip3xHdetJ = new double*[4];
+	double** ip4xHdetJ = new double*[4];
+	double** ip1yHdetJ = new double*[4];
+	double** ip2yHdetJ = new double*[4];
+	double** ip3yHdetJ = new double*[4];
+	double** ip4yHdetJ = new double*[4];
+	for (int i = 0; i < 4; i++)
+	{
+		ip1xHdetJ[i] = new double[4];
+		ip2xHdetJ[i] = new double[4];
+		ip3xHdetJ[i] = new double[4];
+		ip4xHdetJ[i] = new double[4];
+		ip1yHdetJ[i] = new double[4];
+		ip2yHdetJ[i] = new double[4];
+		ip3yHdetJ[i] = new double[4];
+		ip4yHdetJ[i] = new double[4];
+	}
 	//matrixes below: conductivity*({dN/dx}*{dN/dx}Transposed*detJ + {dN/dy}*{dN/dy}Transposed*detJ)
-	double ip1condH[4][4];
-	double ip2condH[4][4];
-	double ip3condH[4][4];
-	double ip4condH[4][4];
+	double** ip1condH = new double*[4];
+	double** ip2condH = new double*[4];
+	double** ip3condH = new double*[4];
+	double** ip4condH = new double*[4];
+	for (int i = 0; i < 4; i++)
+	{
+		ip1condH[i] = new double[4];
+		ip2condH[i] = new double[4];
+		ip3condH[i] = new double[4];
+		ip4condH[i] = new double[4];
+	}
 
 	//========== filling auxiliary tabs ==============
 	for (int i = 0; i < 4; i++)
@@ -229,6 +261,100 @@ void Elmnt::set_matrixH()
 		}
 	}
 
+	//================= ADDING BOUNDARY CONDITIONS ================================
+	//auxuliary tab for boundary conditions
+	bool boundaries[4];
+
+	for (int i = 0; i < 3; i++)
+		boundaries[i] = nodeID[i].edge && nodeID[i + 1].edge;
+	boundaries[3] = nodeID[3].edge && nodeID[0].edge;
+
+	cout << "\n\nBoundaries:\n";
+	for (int i = 0; i < 4; i++)
+	{
+		cout << boundaries[i] << "\t";
+	}
+
+	double lenghtOfBoundary[4];
+	for (int i = 0; i < 4; i++)
+		lenghtOfBoundary[i] = 0.025;
+
+	double boundaryN[2][2];		// [node num(0/1)][shape fun num]
+	boundaryN[0][0] = 0.5*(1 + (1 / sqrt(3)));
+	boundaryN[0][1] = 0.5*(1 - (1 / sqrt(3)));
+	boundaryN[1][0] = 0.5*(1 - (1 / sqrt(3)));
+	boundaryN[1][1] = 0.5*(1 + (1 / sqrt(3)));
+
+	double auxiliaryBoundaryTab[4][2][2][2];	// [boundary num][node num(0/1)][][]
+	for (int b = 0; b < 4; b++)
+		for (int ip = 0; ip < 2; ip++)
+			for (int i = 0; i < 2; i++)
+				for (int j = 0; j < 2; j++)
+					auxiliaryBoundaryTab[b][ip][i][j] = boundaryN[ip][i] * boundaryN[ip][j] * alpha;
+
+	cout << "\n\nAUXILIARY BOUNDARY TAB:\n";
+	for (int b = 0; b < 4; b++)
+	{
+		cout << "boundary number: " << b + 1 << ":\n";
+		for (int ip = 0; ip < 2; ip++)
+		{
+			cout << "node num (pc): " << ip + 1 << ":\n";
+			for (int i = 0; i < 2; i++)
+			{
+				for (int j = 0; j < 2; j++)
+					cout << auxiliaryBoundaryTab[b][ip][i][j] << "\t";
+				cout << endl;
+			}
+		}
+	}
+
+
+	double boundaryCond[4][2][2];		//[boundary num][][]
+	for (int b = 0; b < 4; b++)
+		for (int i = 0; i < 2; i++)
+			for (int j = 0; j < 2; j++)
+				boundaryCond[b][i][j] = (auxiliaryBoundaryTab[b][0][i][j] + auxiliaryBoundaryTab[b][1][i][j])*lenghtOfBoundary[b] / 2 * int(boundaries[b]); //bc detJ=l/2
+
+
+	cout << "\n\nsums:\n";
+	for (int b = 0; b < 4; b++)
+	{
+		cout << "boundary number: " << b + 1 << ":\n";
+		for (int i = 0; i < 2; i++)
+		{
+			for (int j = 0; j < 2; j++)
+				cout << boundaryCond[b][i][j] << "\t";
+			cout << endl;
+		}
+		cout << endl;
+	}
+
+
+	double boundaryH[4][4];
+	for (int i = 0; i < 4; i++)
+		for (int j = 0; j < 4; j++)
+			boundaryH[i][j] = 0;
+
+	for (int b = 0; b < 4; b++)
+		for (int i = 0; i < 2; i++)
+			for (int j = 0; j < 2; j++)
+			{
+				//cout << "\nboundaryH[" << (b + i) % 4 << "][" << (b + j) % 4 << "] += boundaryCond[" << b << "][" << i << "][" << j << "]\n";
+				//cout << boundaryH[(b + i) % 4][(b + j) % 4] << " += " << boundaryCond[b][i][j] << endl;
+				boundaryH[(b + i) % 4][(b + j) % 4] += boundaryCond[b][i][j];
+				//cout << "=" << boundaryH[(b + i) % 4][(b + j) % 4] << endl;
+
+			}
+
+
+	cout << "\n\nBOUNDARY CONDITIONS\n\n";
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+			cout << boundaryH[i][j] << "\t";
+		cout << endl;
+	}
+
 	cout << "\n\n\t\tMATRIX H\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -238,6 +364,12 @@ void Elmnt::set_matrixH()
 		}
 		cout << "\n";
 	}
+
+	//========================== ASSEMBLING MATRIX H WITH BOUNDARY CONDITIONS ======================================
+	for (int i = 0; i < 4; i++)
+		for (int j = 0; j < 4; j++)
+			matrixH[i][j] += boundaryH[i][j];
+
 
 	/*cout << "\nIP=1, {dN/dx}*{dN/dx}Transposed:\n\n";
 	for (int i = 0; i < 4; i++)
@@ -439,8 +571,30 @@ void Elmnt::set_matrixH()
 	cout << endl;
 	}*/
 
-	//delete ip1xH, ip1xH, ip2xH, ip3xH, ip4xH, ip1yH, ip2yH, ip3yH, ip4yH;
-	//delete ip1xHdetJ, ip2xHdetJ, ip3xHdetJ, ip4xHdetJ, ip1yHdetJ, ip2yHdetJ, ip3yHdetJ, ip4yHdetJ;
+	/*delete ip1xH;
+	delete ip1xH;
+	delete ip2xH;
+	delete ip3xH;
+	delete ip4xH;
+	delete ip1yH;
+	delete ip2yH;
+	delete ip3yH;
+	delete ip4yH;
+	delete ip1xHdetJ;
+	delete ip2xHdetJ;
+	delete ip3xHdetJ;
+	delete ip4xHdetJ;
+	delete ip1yHdetJ;
+	delete ip2yHdetJ;
+	delete ip3yHdetJ;
+	delete ip4yHdetJ;
+	delete ip1condH;
+	delete ip2condH;
+	delete ip3condH;
+	delete ip4condH;*/
+	//problem with delete functions
+
+
 }
 
 void Elmnt::set_matrixC()
@@ -459,62 +613,58 @@ void Elmnt::set_matrixC()
 		}
 	}
 
-
-	cout << "\n\nAUXILIARY MATRIXES FOR C MATRIX\n";
+	/*cout << "\n\nAUXILIARY MATRIXES FOR C MATRIX\n";
 	cout << "integration point number 1:\n";
 	for (int i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 4; j++)
-		{
-			cout << auxiliaryMatrix[0][i][j] << "\t";
-		}
-		cout << endl;
+	for (int j = 0; j < 4; j++)
+	{
+	cout << auxiliaryMatrix[0][i][j] << "\t";
+	}
+	cout << endl;
 	}
 
 	cout << "integration point number 2:\n";
 	for (int i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 4; j++)
-		{
-			cout << auxiliaryMatrix[1][i][j] << "\t";
-		}
-		cout << endl;
+	for (int j = 0; j < 4; j++)
+	{
+	cout << auxiliaryMatrix[1][i][j] << "\t";
+	}
+	cout << endl;
 	}
 
 	cout << "integration point number 3: \n";
 	for (int i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 4; j++)
-		{
-			cout << auxiliaryMatrix[2][i][j] << "\t";
-		}
-		cout << endl;
+	for (int j = 0; j < 4; j++)
+	{
+	cout << auxiliaryMatrix[2][i][j] << "\t";
+	}
+	cout << endl;
 	}
 	cout << "integration point number 4:\n";
 	for (int i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 4; j++)
-		{
-			cout << auxiliaryMatrix[3][i][j] << "\t";
-		}
-		cout << endl;
+	for (int j = 0; j < 4; j++)
+	{
+	cout << auxiliaryMatrix[3][i][j] << "\t";
+	}
+	cout << endl;
 	}
 
 	cout << "\n\nMATRIX C:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 4; j++)
-		{
-			cout << matrixC[i][j] << "\t";
-		}
-		cout << endl;
+	for (int j = 0; j < 4; j++)
+	{
+	cout << matrixC[i][j] << "\t";
 	}
-
-
+	cout << endl;
+	}*/
 }
 
 void Elmnt::showElement()
 {
 	cout << endl << nodeID[0].get_id() << "\t" << nodeID[1].get_id() << "\t" << nodeID[2].get_id() << "\t" << nodeID[3].get_id() << endl;
-
 }

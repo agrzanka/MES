@@ -62,7 +62,7 @@ int main()
 	mesh.gridElmnts[4][2].showElement();
 	*/
 
-	Node node1(0, 0, 0, 0, 0), node2(1, 0.025, 0, 0, 0), node3(2, 0.025, 0.025, 0, 0), node4(3, 0, 0.025, 0, 0);
+	Node node1(0, 0, 0, 0, 1), node2(1, 0.025, 0, 0, 1), node3(2, 0.025, 0.025, 0, 0), node4(3, 0, 0.025, 0, 0);
 	Elmnt elmnt(0, node1, node2, node3, node4, ShapeFun);
 	elmnt.showElement();
 

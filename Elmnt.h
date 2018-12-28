@@ -15,6 +15,7 @@ public:
 	double k = 30;//conductivity
 	double c = 700;
 	double ro = 7800;
+	double alpha = 25;
 
 	double transfJacobian[4][2][2]; //coordinates transformation with Jacobian -four matrixes- [integration point][0:ksi, 1:eta][0:x, 1:y]
 	double detJ[4];//det[J] -determinants of Jacobian matrixes above, for each of integration points  [integration point]
