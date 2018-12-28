@@ -13,6 +13,8 @@ Grid::Grid(Input_data data, ShapeFunctions shapeFun)
 	this->nH = data.get_num_of_nodes_H();
 	this->nL = data.get_num_of_nodes_L();
 
+	this->tot = data.get_tot();
+
 	this->deltaY = this->H / (this->nH - 1);
 	this->deltaX = this->L / (this->nL - 1);
 	std::cout << "delta X: " << this->deltaX << "\ndeltaY: " << deltaY << std::endl;
@@ -82,7 +84,10 @@ void Grid::prepareElements()
 		for (int indexH = 0; indexH < nH - 1; indexH++)
 		{
 			gridElmnts[indexH][indexL].set_id(indexH + indexL*(nH - 1));
+			gridElmnts[indexH][indexL].set_tot(tot);
 			gridElmnts[indexH][indexL].set_nodes(nodes[indexH][indexL], nodes[indexH][indexL + 1], nodes[indexH + 1][indexL + 1], nodes[indexH + 1][indexL]);
+			gridElmnts[indexH][indexL].set_edgeOfGrid();
+			gridElmnts[indexH][indexL].set_lenghtOfEdges();
 			gridElmnts[indexH][indexL].set_shapeFunctions(shapeFun);
 			gridElmnts[indexH][indexL].set_interpolationOfCoordinates();
 			gridElmnts[indexH][indexL].set_transformationJacobian();
@@ -92,6 +97,7 @@ void Grid::prepareElements()
 			gridElmnts[indexH][indexL].set_dNdY();
 			gridElmnts[indexH][indexL].set_matrixH();
 			gridElmnts[indexH][indexL].set_matrixC();
+			gridElmnts[indexH][indexL].set_vectorP();
 		}
 	}
 }

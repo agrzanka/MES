@@ -3,11 +3,14 @@
 
 using namespace std;
 
-Elmnt::Elmnt(int id, Node n1, Node n2, Node n3, Node n4, ShapeFunctions shapeFun)
+Elmnt::Elmnt(int id, Node n1, Node n2, Node n3, Node n4, ShapeFunctions shapeFun, double tot)
 {
-	//this->set_edgeOfGrid(edge);
 	this->set_id(id);
+	this->set_tot(tot);
 	this->set_nodes(n1, n2, n3, n4);
+	this->set_edgeOfGrid();
+	this->set_lenghtOfEdges();
+	this->set_tot(tot);
 	this->set_shapeFunctions(shapeFun);
 	this->set_interpolationOfCoordinates();
 	this->set_transformationJacobian();
@@ -17,6 +20,7 @@ Elmnt::Elmnt(int id, Node n1, Node n2, Node n3, Node n4, ShapeFunctions shapeFun
 	this->set_dNdY();
 	this->set_matrixH();
 	this->set_matrixC();
+	this->set_vectorP();
 }
 
 Elmnt::Elmnt()
@@ -41,11 +45,20 @@ void Elmnt::set_nodes(Node n1, Node n2, Node n3, Node n4)
 	this->nodeID[2] = n3;
 	this->nodeID[3] = n4;
 }
-/*void Elmnt::set_edgeOfGrid(bool edge)
+void Elmnt::set_edgeOfGrid()
 {
-this->edgeOfGrid = edge;
-}*/
+	for (int i = 0; i < 3; i++)
+		edgeOfGrid[i] = nodeID[i].edge && nodeID[i + 1].edge;
+	edgeOfGrid[3] = nodeID[3].edge && nodeID[0].edge;
+}
 
+void Elmnt::set_lenghtOfEdges()
+{
+	lenghtOfEdges[0] = fabs(nodeID[0].get_x() - nodeID[1].get_x());
+	lenghtOfEdges[1] = fabs(nodeID[1].get_y() - nodeID[2].get_y());
+	lenghtOfEdges[2] = fabs(nodeID[2].get_x() - nodeID[3].get_x());
+	lenghtOfEdges[3] = fabs(nodeID[3].get_y() - nodeID[0].get_y());
+}
 
 int Elmnt::get_id()
 {
@@ -55,8 +68,10 @@ int Elmnt::get_id()
 {
 return edgeOfGrid;
 }*/
-
-
+void Elmnt::set_tot(double tot)
+{
+	this->tot = tot;
+}
 
 void Elmnt::set_shapeFunctions(ShapeFunctions shapeFun)
 {
@@ -78,7 +93,6 @@ void Elmnt::set_interpolationOfCoordinates()
 	}
 	cout << endl;
 }
-
 
 void Elmnt::set_transformationJacobian()
 {
@@ -263,21 +277,12 @@ void Elmnt::set_matrixH()
 
 	//================= ADDING BOUNDARY CONDITIONS ================================
 	//auxuliary tab for boundary conditions
-	bool boundaries[4];
 
-	for (int i = 0; i < 3; i++)
-		boundaries[i] = nodeID[i].edge && nodeID[i + 1].edge;
-	boundaries[3] = nodeID[3].edge && nodeID[0].edge;
-
-	cout << "\n\nBoundaries:\n";
+	cout << "\n\nEDGES:\n";
 	for (int i = 0; i < 4; i++)
 	{
-		cout << boundaries[i] << "\t";
+		cout << edgeOfGrid[i] << "\t";
 	}
-
-	double lenghtOfBoundary[4];
-	for (int i = 0; i < 4; i++)
-		lenghtOfBoundary[i] = 0.025;
 
 	double boundaryN[2][2];		// [node num(0/1)][shape fun num]
 	boundaryN[0][0] = 0.5*(1 + (1 / sqrt(3)));
@@ -292,43 +297,40 @@ void Elmnt::set_matrixH()
 				for (int j = 0; j < 2; j++)
 					auxiliaryBoundaryTab[b][ip][i][j] = boundaryN[ip][i] * boundaryN[ip][j] * alpha;
 
-	cout << "\n\nAUXILIARY BOUNDARY TAB:\n";
+	/*cout << "\n\nAUXILIARY BOUNDARY TAB:\n";
 	for (int b = 0; b < 4; b++)
 	{
-		cout << "boundary number: " << b + 1 << ":\n";
-		for (int ip = 0; ip < 2; ip++)
-		{
-			cout << "node num (pc): " << ip + 1 << ":\n";
-			for (int i = 0; i < 2; i++)
-			{
-				for (int j = 0; j < 2; j++)
-					cout << auxiliaryBoundaryTab[b][ip][i][j] << "\t";
-				cout << endl;
-			}
-		}
+	cout << "boundary number: " << b + 1 << ":\n";
+	for (int ip = 0; ip < 2; ip++)
+	{
+	cout << "node num (pc): " << ip + 1 << ":\n";
+	for (int i = 0; i < 2; i++)
+	{
+	for (int j = 0; j < 2; j++)
+	cout << auxiliaryBoundaryTab[b][ip][i][j] << "\t";
+	cout << endl;
 	}
-
+	}
+	}*/
 
 	double boundaryCond[4][2][2];		//[boundary num][][]
 	for (int b = 0; b < 4; b++)
 		for (int i = 0; i < 2; i++)
 			for (int j = 0; j < 2; j++)
-				boundaryCond[b][i][j] = (auxiliaryBoundaryTab[b][0][i][j] + auxiliaryBoundaryTab[b][1][i][j])*lenghtOfBoundary[b] / 2 * int(boundaries[b]); //bc detJ=l/2
+				boundaryCond[b][i][j] = (auxiliaryBoundaryTab[b][0][i][j] + auxiliaryBoundaryTab[b][1][i][j])*lenghtOfEdges[b] / 2 * int(edgeOfGrid[b]); //bc detJ=l/2
 
-
-	cout << "\n\nsums:\n";
-	for (int b = 0; b < 4; b++)
-	{
-		cout << "boundary number: " << b + 1 << ":\n";
-		for (int i = 0; i < 2; i++)
-		{
-			for (int j = 0; j < 2; j++)
-				cout << boundaryCond[b][i][j] << "\t";
-			cout << endl;
-		}
-		cout << endl;
-	}
-
+																																						 /*cout << "\n\nsums:\n";
+																																						 for (int b = 0; b < 4; b++)
+																																						 {
+																																						 cout << "boundary number: " << b + 1 << ":\n";
+																																						 for (int i = 0; i < 2; i++)
+																																						 {
+																																						 for (int j = 0; j < 2; j++)
+																																						 cout << boundaryCond[b][i][j] << "\t";
+																																						 cout << endl;
+																																						 }
+																																						 cout << endl;
+																																						 }*/
 
 	double boundaryH[4][4];
 	for (int i = 0; i < 4; i++)
@@ -343,33 +345,30 @@ void Elmnt::set_matrixH()
 				//cout << boundaryH[(b + i) % 4][(b + j) % 4] << " += " << boundaryCond[b][i][j] << endl;
 				boundaryH[(b + i) % 4][(b + j) % 4] += boundaryCond[b][i][j];
 				//cout << "=" << boundaryH[(b + i) % 4][(b + j) % 4] << endl;
-
 			}
 
-
-	cout << "\n\nBOUNDARY CONDITIONS\n\n";
+	/*cout << "\n\nBOUNDARY CONDITIONS\n\n";
 	for (int i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 4; j++)
-			cout << boundaryH[i][j] << "\t";
-		cout << endl;
-	}
+	for (int j = 0; j < 4; j++)
+	cout << boundaryH[i][j] << "\t";
+	cout << endl;
+	}*/
 
-	cout << "\n\n\t\tMATRIX H\n";
+	/*cout << "\n\n\t\tMATRIX H\n";
 	for (int i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < 4; j++)
-		{
-			cout << matrixH[i][j] << "\t";
-		}
-		cout << "\n";
+	for (int j = 0; j < 4; j++)
+	{
+	cout << matrixH[i][j] << "\t";
 	}
+	cout << "\n";
+	}*/
 
 	//========================== ASSEMBLING MATRIX H WITH BOUNDARY CONDITIONS ======================================
 	for (int i = 0; i < 4; i++)
 		for (int j = 0; j < 4; j++)
 			matrixH[i][j] += boundaryH[i][j];
-
 
 	/*cout << "\nIP=1, {dN/dx}*{dN/dx}Transposed:\n\n";
 	for (int i = 0; i < 4; i++)
@@ -593,8 +592,6 @@ void Elmnt::set_matrixH()
 	delete ip3condH;
 	delete ip4condH;*/
 	//problem with delete functions
-
-
 }
 
 void Elmnt::set_matrixC()
@@ -662,6 +659,28 @@ void Elmnt::set_matrixC()
 	}
 	cout << endl;
 	}*/
+}
+
+void Elmnt::set_vectorP()
+{
+	for (int i = 0; i < 4; i++)
+		vectorP[i] = 0;
+
+	int i = 0;
+	for (; i < 4; i++)
+	{
+		if (edgeOfGrid[i] == 1)
+			break;
+	}
+	if (i == 4)
+		return;
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (!edgeOfGrid[i])
+			continue;
+		vectorP[i] = (0.5*(1 + (1 / sqrt(3))) + 0.5*(1 - (1 / sqrt(3))) + 0.5*(1 - (1 / sqrt(3))) + 0.5*(1 + (1 / sqrt(3))))*alpha*tot*lenghtOfEdges[i];
+	}
 }
 
 void Elmnt::showElement()

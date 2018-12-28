@@ -16,6 +16,7 @@ class Grid {
 	double deltaY = NULL;
 	//insert the rest of needed data here
 	ShapeFunctions shapeFun;
+	double tot = NULL;
 
 public:
 	Elmnt**gridElmnts = NULL;

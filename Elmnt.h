@@ -11,11 +11,13 @@ public:
 	ShapeFunctions shapeFun;
 	//interpolation of coordinates:
 	double xp[4], yp[4];
+	double lenghtOfEdges[4];
 
 	double k = 30;//conductivity
 	double c = 700;
 	double ro = 7800;
 	double alpha = 25;
+	double tot;
 
 	double transfJacobian[4][2][2]; //coordinates transformation with Jacobian -four matrixes- [integration point][0:ksi, 1:eta][0:x, 1:y]
 	double detJ[4];//det[J] -determinants of Jacobian matrixes above, for each of integration points  [integration point]
@@ -27,18 +29,21 @@ public:
 	double matrixH[4][4];
 	double matrixC[4][4];
 
-	//bool edgeOfGrid=NULL;
+	double vectorP[4];
+
+	bool edgeOfGrid[4];
 
 	//public:
 
-	Elmnt(int id, Node n1, Node n2, Node n3, Node n4, ShapeFunctions shapeFun);
+	Elmnt(int id, Node n1, Node n2, Node n3, Node n4, ShapeFunctions shapeFun, double tot);
 	Elmnt();
 	~Elmnt();
 
 	void set_id(int id);
 	void set_nodes(Node n1, Node n2, Node n3, Node n4);
-	//void set_edgeOfGrid(bool edge);
-
+	void set_edgeOfGrid();
+	void set_lenghtOfEdges();
+	void set_tot(double tot);
 
 	int get_id();
 	//bool is_edgeOfGrid();
@@ -56,6 +61,8 @@ public:
 
 	void set_matrixH();
 	void set_matrixC();
+
+	void set_vectorP();
 
 	void showElement();
 };
