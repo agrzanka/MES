@@ -19,7 +19,7 @@ int main()
 
 	//	ShapeFun.showShapeFunctions();
 
-	//	Grid mesh(data, ShapeFun);
+	Grid mesh(data, ShapeFun);
 	//	cout << "first one:" << endl;
 	//	cout << "id: " << mesh.nodes[0][0].get_id() << "\tx: " << mesh.nodes[0][0].get_x() << endl;
 	//	cout << "last one: " << endl;

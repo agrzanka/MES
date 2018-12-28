@@ -10,7 +10,6 @@ Elmnt::Elmnt(int id, Node n1, Node n2, Node n3, Node n4, ShapeFunctions shapeFun
 	this->set_nodes(n1, n2, n3, n4);
 	this->set_edgeOfGrid();
 	this->set_lenghtOfEdges();
-	this->set_tot(tot);
 	this->set_shapeFunctions(shapeFun);
 	this->set_interpolationOfCoordinates();
 	this->set_transformationJacobian();

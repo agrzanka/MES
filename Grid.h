@@ -14,13 +14,23 @@ class Grid {
 	short nL = NULL;
 	double deltaX = NULL;
 	double deltaY = NULL;
-	//insert the rest of needed data here
+
 	ShapeFunctions shapeFun;
 	double tot = NULL;
+	//double k = NULL;
+	//double c = NULL;
+	//double alpha = NULL;
+	//double ro = NULL;
+	//add setters and getters for all data above
 
 public:
 	Elmnt**gridElmnts = NULL;
 	Node **nodes = NULL;
+
+	double **globalMatrixH;
+	double **globalMatrixC;
+	double *globalVectorP;
+
 	Grid(Input_data data, ShapeFunctions shapeFun);
 	~Grid();
 
@@ -30,4 +40,12 @@ public:
 
 	void prepareElements();
 	void showElementsInGrid();
+
+	void set_globalMatrixH();
+	void set_globalMatrixC();
+	void set_globalVectorP();
+
+	void show_globalMatrixH();
+	void show_globalMatrixC();
+	void show_globalVectorP();
 };
