@@ -1,0 +1,12 @@
+1.  H		height of the grid [m]
+2.  L		lenght of the grid [m]
+3.  nH		number of nodes vertically
+4.  nL		number of nodes horizontally
+5.  k		conductivity [W/m*C]
+6.  tot		ambient temperatur [C]
+7.  tStart	initial temperature [C]
+8.  alpha	[W/m^2*K]
+9.  ro		density [kg/m^3]
+10. cv		specific heat [J/kg*C]
+11. time	simulation time [s]
+12. timeStep	simulation time step [s]
