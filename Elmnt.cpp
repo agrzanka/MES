@@ -669,25 +669,45 @@ void Elmnt::set_matrixC()
 
 void Elmnt::set_vectorP()
 {
+	cout << "\nROBJE WEKTORA\n";
+	cout << alpha << "<-alpha tot->" << tot;
 	for (int i = 0; i < 4; i++)
 		vectorP[i] = 0;
 
-	int i = 0;
-	for (; i < 4; i++)
-	{
-		if (edgeOfGrid[i] == 1)
-			break;
-	}
-	if (i == 4)
-		return;
+	//int i = 0;
+	//for (; i < 4; i++)
+	//{
+	//	if (edgeOfGrid[i] == 1)
+	//		break;
+	//}
+	//if (i == 4)
+	//	return;							//idk
 
 	for (int i = 0; i < 4; i++)
 	{
-		if (!edgeOfGrid[i])
+		if (!edgeOfGrid[i]) //isn't that useless? it makes a lot of zeroes actually
 			continue;
-		vectorP[i] = (0.5*(1 + (1 / sqrt(3))) + 0.5*(1 - (1 / sqrt(3))) + 0.5*(1 - (1 / sqrt(3))) + 0.5*(1 + (1 / sqrt(3))))*alpha*tot*lenghtOfEdges[i];
+		cout << "lenght: " << lenghtOfEdges[i] << endl;
+		vectorP[i] = 2 * alpha*tot*lenghtOfEdges[i];
+
+		//vectorP[i] = (0.5*(1 + (1 / sqrt(3))) + 0.5*(1 - (1 / sqrt(3))) + 0.5*(1 - (1 / sqrt(3))) + 0.5*(1 + (1 / sqrt(3))))*alpha*tot*lenghtOfEdges[i];
+		cout << "\t" << vectorP[i] << "\t";
 	}
 }
+
+void Elmnt::clearHPC()
+{
+	for (int i = 0; i < 4; i++)
+	{
+		vectorP[i] = 0;
+		for (int j = 0; j < 4; j++)
+		{
+			matrixH[i][j] = 0;
+			matrixC[i][j] = 0;
+		}
+	}
+}
+
 
 void Elmnt::showElement()
 {

@@ -49,4 +49,6 @@ public:
 	void show_globalMatrixH();
 	void show_globalMatrixC();
 	void show_globalVectorP();
+
+	void clearAll();
 };

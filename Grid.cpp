@@ -37,6 +37,8 @@ Grid::Grid(Input_data data, ShapeFunctions shapeFun)
 	this->show_globalMatrixC();
 	this->set_globalVectorP();
 	this->show_globalVectorP();
+
+	//this->clearAll();
 }
 
 Grid::~Grid()
@@ -59,7 +61,6 @@ void Grid::prepareNodes()
 				nodes[indexL][indexH].set_edge(false);
 		}
 	}
-	//this->nodes;
 }
 
 void Grid::showNodesinGrid()
@@ -91,7 +92,7 @@ void Grid::prepareElements()
 		{
 			gridElmnts[indexL][indexH].set_id(indexH + indexL*(nH - 1));
 			gridElmnts[indexL][indexH].set_constants(data);
-			gridElmnts[indexL][indexH].set_nodes(nodes[indexL][indexH], nodes[indexL][indexH + 1], nodes[indexL + 1][indexH + 1], nodes[indexL + 1][indexH]);
+			gridElmnts[indexL][indexH].set_nodes(nodes[indexL][indexH], nodes[indexL + 1][indexH], nodes[indexL + 1][indexH + 1], nodes[indexL][indexH + 1]);
 			gridElmnts[indexL][indexH].set_edgeOfGrid();
 			gridElmnts[indexL][indexH].set_lenghtOfEdges();
 			gridElmnts[indexL][indexH].set_shapeFunctions(shapeFun);
@@ -241,5 +242,19 @@ void Grid::show_globalVectorP()
 	for (int i = 0; i < nL*nH; i++)
 	{
 		cout << globalVectorP[i] << "\t";
+	}
+}
+
+void Grid::clearAll()
+{
+	for (int i = 0; i < nL - 1; i++)
+	{
+		for (int j = 0; j < nH - 1; j++)
+		{
+			gridElmnts[i][j].clearHPC();
+			globalMatrixH[i][j] = 0;
+			globalMatrixC[i][j] = 0;
+		}
+		globalVectorP[i] = 0;
 	}
 }

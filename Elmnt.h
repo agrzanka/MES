@@ -68,4 +68,6 @@ public:
 	void set_vectorP();
 
 	void showElement();
+
+	void clearHPC(); //function to fill whole matrix H, vextor P and matrix C with zeroes
 };
