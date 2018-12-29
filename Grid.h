@@ -7,6 +7,7 @@
 class Grid {
 	//Node **nodes = NULL;
 	//matrix of elements needed here
+	Input_data data;
 
 	double H = NULL;
 	double L = NULL;
@@ -17,11 +18,11 @@ class Grid {
 
 	ShapeFunctions shapeFun;
 	double tot = NULL;
-	//double k = NULL;
-	//double c = NULL;
-	//double alpha = NULL;
-	//double ro = NULL;
-	//add setters and getters for all data above
+	double k = NULL;
+	double c = NULL;
+	double alpha = NULL;
+	double ro = NULL;
+
 
 public:
 	Elmnt**gridElmnts = NULL;

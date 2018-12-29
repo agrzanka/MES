@@ -3,10 +3,10 @@
 
 using namespace std;
 
-Elmnt::Elmnt(int id, Node n1, Node n2, Node n3, Node n4, ShapeFunctions shapeFun, double tot)
+Elmnt::Elmnt(int id, Node n1, Node n2, Node n3, Node n4, ShapeFunctions shapeFun, Input_data data)
 {
 	this->set_id(id);
-	this->set_tot(tot);
+	this->set_constants(data);
 	this->set_nodes(n1, n2, n3, n4);
 	this->set_edgeOfGrid();
 	this->set_lenghtOfEdges();
@@ -67,9 +67,16 @@ int Elmnt::get_id()
 {
 return edgeOfGrid;
 }*/
-void Elmnt::set_tot(double tot)
+void Elmnt::set_constants(Input_data data)
 {
-	this->tot = tot;
+	this->tot = data.get_tot();
+	this->alpha = data.get_alpha();
+	this->cv = data.get_cv();
+	this->k = data.get_k();
+	this->ro = data.get_ro();
+	this->tStart = data.get_tStart();
+	this->time = data.get_time();
+	this->timeStep = data.get_timeStep();
 }
 
 void Elmnt::set_shapeFunctions(ShapeFunctions shapeFun)
@@ -601,10 +608,10 @@ void Elmnt::set_matrixC()
 	{
 		for (int j = 0; j < 4; j++)
 		{
-			auxiliaryMatrix[0][i][j] = shapeFun.N[i][0] * shapeFun.N[j][0] * detJ[0] * c*ro;
-			auxiliaryMatrix[1][i][j] = shapeFun.N[i][1] * shapeFun.N[j][1] * detJ[1] * c*ro;
-			auxiliaryMatrix[2][i][j] = shapeFun.N[i][2] * shapeFun.N[j][2] * detJ[2] * c*ro;
-			auxiliaryMatrix[3][i][j] = shapeFun.N[i][3] * shapeFun.N[j][3] * detJ[3] * c*ro;
+			auxiliaryMatrix[0][i][j] = shapeFun.N[i][0] * shapeFun.N[j][0] * detJ[0] * cv*ro;
+			auxiliaryMatrix[1][i][j] = shapeFun.N[i][1] * shapeFun.N[j][1] * detJ[1] * cv*ro;
+			auxiliaryMatrix[2][i][j] = shapeFun.N[i][2] * shapeFun.N[j][2] * detJ[2] * cv*ro;
+			auxiliaryMatrix[3][i][j] = shapeFun.N[i][3] * shapeFun.N[j][3] * detJ[3] * cv*ro;
 			matrixC[i][j] = auxiliaryMatrix[0][i][j] + auxiliaryMatrix[1][i][j] + auxiliaryMatrix[2][i][j] + auxiliaryMatrix[3][i][j];
 		}
 	}

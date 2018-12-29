@@ -13,11 +13,14 @@ public:
 	double xp[4], yp[4];
 	double lenghtOfEdges[4];
 
-	double k = 30;//conductivity
-	double c = 700;
-	double ro = 7800;
-	double alpha = 25;
-	double tot;
+	double k = NULL;//conductivity
+	double cv = NULL;
+	double ro = NULL;
+	double alpha = NULL;
+	double tot = NULL;
+	double tStart = NULL;
+	double time = NULL;
+	double timeStep = NULL;
 
 	double transfJacobian[4][2][2]; //coordinates transformation with Jacobian -four matrixes- [integration point][0:ksi, 1:eta][0:x, 1:y]
 	double detJ[4];//det[J] -determinants of Jacobian matrixes above, for each of integration points  [integration point]
@@ -35,7 +38,7 @@ public:
 
 	//public:
 
-	Elmnt(int id, Node n1, Node n2, Node n3, Node n4, ShapeFunctions shapeFun, double tot);
+	Elmnt(int id, Node n1, Node n2, Node n3, Node n4, ShapeFunctions shapeFun, Input_data data);
 	Elmnt();
 	~Elmnt();
 
@@ -43,7 +46,7 @@ public:
 	void set_nodes(Node n1, Node n2, Node n3, Node n4);
 	void set_edgeOfGrid();
 	void set_lenghtOfEdges();
-	void set_tot(double tot);
+	void set_constants(Input_data data);
 
 	int get_id();
 	//bool is_edgeOfGrid();

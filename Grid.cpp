@@ -7,6 +7,7 @@ using namespace std;
 
 Grid::Grid(Input_data data, ShapeFunctions shapeFun)
 {
+	this->data = data;
 	this->shapeFun = shapeFun;
 	this->H = data.get_height();
 	this->L = data.get_lenght();
@@ -89,7 +90,7 @@ void Grid::prepareElements()
 		for (int indexH = 0; indexH < nH - 1; indexH++)
 		{
 			gridElmnts[indexL][indexH].set_id(indexH + indexL*(nH - 1));
-			gridElmnts[indexL][indexH].set_tot(tot);
+			gridElmnts[indexL][indexH].set_constants(data);
 			gridElmnts[indexL][indexH].set_nodes(nodes[indexL][indexH], nodes[indexL][indexH + 1], nodes[indexL + 1][indexH + 1], nodes[indexL + 1][indexH]);
 			gridElmnts[indexL][indexH].set_edgeOfGrid();
 			gridElmnts[indexL][indexH].set_lenghtOfEdges();
