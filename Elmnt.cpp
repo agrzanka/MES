@@ -385,7 +385,6 @@ void Elmnt::set_matrixH()
 	}
 	cout << "\n";
 	}
-
 	cout << "\nIP=2, {dN/dx}*{dN/dx}Transposed:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -395,7 +394,6 @@ void Elmnt::set_matrixH()
 	}
 	cout << endl;
 	}
-
 	cout << "\nIP=3, {dN/dx}*{dN/dx}Transposed:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -405,7 +403,6 @@ void Elmnt::set_matrixH()
 	}
 	cout << endl;
 	}
-
 	cout << "\nIP=4, {dN/dx}*{dN/dx}Transposed:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -425,7 +422,6 @@ void Elmnt::set_matrixH()
 	}
 	cout << "\n";
 	}
-
 	cout << "\nIP=2, {dN/dy}*{dN/dy}Transposed:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -435,7 +431,6 @@ void Elmnt::set_matrixH()
 	}
 	cout << endl;
 	}
-
 	cout << "\nIP=3, {dN/dy}*{dN/dy}Transposed:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -445,7 +440,6 @@ void Elmnt::set_matrixH()
 	}
 	cout << endl;
 	}
-
 	cout << "\nIP=4, {dN/dy}*{dN/dy}Transposed:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -465,7 +459,6 @@ void Elmnt::set_matrixH()
 	}
 	cout << "\n";
 	}
-
 	cout << "\nIP=2, {dN/dx}*{dN/dx}Transposed*detJ:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -475,7 +468,6 @@ void Elmnt::set_matrixH()
 	}
 	cout << endl;
 	}
-
 	cout << "\nIP=3, {dN/dx}*{dN/dx}Transposed*detJ:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -485,7 +477,6 @@ void Elmnt::set_matrixH()
 	}
 	cout << endl;
 	}
-
 	cout << "\nIP=4, {dN/dx}*{dN/dx}Transposed*detJ:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -495,7 +486,6 @@ void Elmnt::set_matrixH()
 	}
 	cout << endl;
 	}
-
 	cout << "\nIP=1, {dN/dy}*{dN/dy}Transposed*detJ:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -505,7 +495,6 @@ void Elmnt::set_matrixH()
 	}
 	cout << "\n";
 	}
-
 	cout << "\nIP=2, {dN/dy}*{dN/dy}Transposed*detJ:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -515,7 +504,6 @@ void Elmnt::set_matrixH()
 	}
 	cout << endl;
 	}
-
 	cout << "\nIP=3, {dN/dy}*{dN/dy}Transposed*detJ:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -525,7 +513,6 @@ void Elmnt::set_matrixH()
 	}
 	cout << endl;
 	}
-
 	cout << "\nIP=4, {dN/dy}*{dN/dy}Transposed*detJ:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -545,7 +532,6 @@ void Elmnt::set_matrixH()
 	}
 	cout << "\n";
 	}
-
 	cout << "\nIP=2, conductivity*({dN/dx}*{dN/dx}Transposed*detJ + {dN/dy}*{dN/dy}Transposed*detJ:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -555,7 +541,6 @@ void Elmnt::set_matrixH()
 	}
 	cout << endl;
 	}
-
 	cout << "\nIP=3, conductivity*({dN/dx}*{dN/dx}Transposed*detJ + {dN/dy}*{dN/dy}Transposed*detJ:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -565,7 +550,6 @@ void Elmnt::set_matrixH()
 	}
 	cout << endl;
 	}
-
 	cout << "\nIP=4, conductivity*({dN/dx}*{dN/dx}Transposed*detJ + {dN/dy}*{dN/dy}Transposed*detJ:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -626,7 +610,6 @@ void Elmnt::set_matrixC()
 	}
 	cout << endl;
 	}
-
 	cout << "integration point number 2:\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -636,7 +619,6 @@ void Elmnt::set_matrixC()
 	}
 	cout << endl;
 	}
-
 	cout << "integration point number 3: \n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -655,7 +637,6 @@ void Elmnt::set_matrixC()
 	}
 	cout << endl;
 	}
-
 	cout << "\n\nMATRIX C:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -706,18 +687,6 @@ void Elmnt::clearHPC()
 			matrixC[i][j] = 0;
 		}
 	}
-}
-
-void Elmnt::set_temp(double *vector)
-{
-	for (int i = 0; i < 4; i++)
-		nodeID[i].set_temperature(nodeID[i].get_id());
-}
-
-void Elmnt::get_temp(double * vector)
-{
-	for (int i = 0; i < 4; i++)
-		vector[nodeID[i].get_id()] = nodeID[i].get_temperature();
 }
 
 
