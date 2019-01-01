@@ -23,10 +23,8 @@ class Grid {
 	double alpha = NULL;
 	double ro = NULL;
 
-	double *vectorTemp;
-
-
 public:
+
 	Elmnt**gridElmnts = NULL;
 	Node **nodes = NULL;
 
@@ -34,7 +32,13 @@ public:
 	double **globalMatrixC;
 	double *globalVectorP;
 
-	Grid(Input_data data, ShapeFunctions shapeFun, double*vectorTemp);
+	double tStart = NULL;
+	double *vectorTemp;
+
+	double**finalMatrixHsumMatrixCdivTimeStep;
+	double*finalVectorPsumMatrixCdivTimeSteptimesTemperature;
+
+	Grid(Input_data data, ShapeFunctions shapeFun);// , double*vectorTemp);
 	~Grid();
 
 	void prepareNodes();
@@ -56,6 +60,13 @@ public:
 
 	void set_temperature(double * vector);
 
-	void set_finalMatrix(double**finalMatrix);
-	void set_finalVector(double*finalVector);
+	//void set_finalMatrix(double**finalMatrix);
+	//void set_finalVector(double*finalVector);
+	void set_finalMatrix();
+	void set_finalVector();
+
+	void show_finalMatrix();
+	void show_finalVector();
+
+	void prepareVectorsandMatrix();
 };

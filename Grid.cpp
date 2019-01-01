@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Grid::Grid(Input_data data, ShapeFunctions shapeFun, double*vectorTemp)
+Grid::Grid(Input_data data, ShapeFunctions shapeFun)//, double*vectorTemp)
 {
 	this->data = data;
 	this->shapeFun = shapeFun;
@@ -15,8 +15,16 @@ Grid::Grid(Input_data data, ShapeFunctions shapeFun, double*vectorTemp)
 	this->nL = data.get_num_of_nodes_L();
 
 	this->tot = data.get_tot();
+	this->tStart = data.get_tStart();
 
-	this->vectorTemp = vectorTemp;
+	/*for(int i = 0; i < data.get_numberOfNodes(); i++)
+	this->vectorTemp[i] = this->tStart;
+
+	this->finalMatrixHsumMatrixCdivTimeStep = new double*[data.get_numberOfNodes()];
+	for (int i = 0; i < data.get_numberOfNodes(); i++)
+	this->finalMatrixHsumMatrixCdivTimeStep[i] = new double[data.get_numberOfNodes()];
+
+	this->finalVectorPsumMatrixCdivTimeSteptimesTemperature = new double[data.get_numberOfNodes()];*/
 
 	this->deltaY = this->H / (this->nH - 1);
 	this->deltaX = this->L / (this->nL - 1);
@@ -39,6 +47,14 @@ Grid::Grid(Input_data data, ShapeFunctions shapeFun, double*vectorTemp)
 	this->show_globalMatrixC();
 	this->set_globalVectorP();
 	this->show_globalVectorP();
+
+	this->prepareVectorsandMatrix();
+
+	this->set_finalMatrix();
+	this->set_finalVector();
+
+	//this->show_finalMatrix();
+	this->show_finalVector();
 
 	//this->clearAll();
 }
@@ -269,16 +285,47 @@ void Grid::set_temperature(double *vector)
 			gridElmnts[indexl][indexh].set_temp(vector);
 }
 
-void Grid::set_finalMatrix(double **finalMatrix)
+void Grid::set_finalMatrix()//double **finalMatrix)
 {
 	for (int indexL = 0; indexL < data.get_numberOfNodes(); indexL++)
 		for (int indexH = 0; indexH < data.get_numberOfNodes(); indexH++)
-			finalMatrix[indexL][indexH] = globalMatrixH[indexL][indexH] + (globalMatrixC[indexL][indexH] / data.get_timeStep());
+			finalMatrixHsumMatrixCdivTimeStep[indexL][indexH] = globalMatrixH[indexL][indexH] + (globalMatrixC[indexL][indexH] / data.get_timeStep());
 }
 
-void Grid::set_finalVector(double*finalVector)
+void Grid::set_finalVector()//double*finalVector)
 {
 	for (int indexL = 0; indexL < data.get_numberOfNodes(); indexL++)
 		for (int indexH = 0; indexH < data.get_numberOfNodes(); indexH++)
-			finalVector[indexL] = globalVectorP[indexL] + (globalMatrixC[indexL][indexH] / data.get_timeStep()*vectorTemp[indexH]);
+			finalVectorPsumMatrixCdivTimeSteptimesTemperature[indexL] = globalVectorP[indexL] + (globalMatrixC[indexL][indexH] / data.get_timeStep()*vectorTemp[indexH]);
+}
+
+void Grid::show_finalMatrix()
+{
+	cout << "\n\n\nWDEWEGTHDFSEWT%$EGRFWT%HDGRFT%EHDGERTGDGBRTRHGBTRGTB\n\n";
+	for (int il = 0; il < data.get_numberOfNodes(); il++)
+	{
+		for (int ih = 0; ih < data.get_numberOfNodes(); ih++)
+			cout << finalMatrixHsumMatrixCdivTimeStep[il][ih] << "\t";
+		cout << endl;
+	}
+
+}
+void Grid::show_finalVector()
+{
+	cout << "\n\nhuygjtdrcgfyu7ittfducgyuhcfgyukfcgyugfgygygfcgyfgcgyfggyfggfgggyfggyfgdtytfgyggfd\n\n";
+	for (int k = 0; k < data.get_numberOfNodes(); k++)
+		cout << finalVectorPsumMatrixCdivTimeSteptimesTemperature[k] << "\t";
+}
+
+void Grid::prepareVectorsandMatrix()
+{
+	vectorTemp = new double(data.get_numberOfNodes());
+	for (int i = 0; i < data.get_numberOfNodes(); i++)
+		vectorTemp[i] = tStart;
+
+	finalMatrixHsumMatrixCdivTimeStep = new double*[data.get_numberOfNodes()];
+	for (int i = 0; i < data.get_numberOfNodes(); i++)
+		finalMatrixHsumMatrixCdivTimeStep[i] = new double[data.get_numberOfNodes()];
+
+	finalVectorPsumMatrixCdivTimeSteptimesTemperature = new double[data.get_numberOfNodes()];
 }
