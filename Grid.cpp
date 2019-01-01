@@ -60,6 +60,7 @@ void Grid::prepareNodes()
 			nodes[indexL][indexH].set_x(indexL*deltaX);
 			nodes[indexL][indexH].set_y(indexH*deltaY);
 			nodes[indexL][indexH].set_temperature(vectorTemp[indexH + indexL*nH]);
+			cout << "\nNode num: " << nodes[indexL][indexH].get_id() << "\ttemp: " << nodes[indexL][indexH].get_temperature();
 
 			if (indexH == 0 || indexH == (nH - 1) || indexL == 0 || indexL == (nL - 1))
 				nodes[indexL][indexH].set_edge(true);
@@ -273,4 +274,18 @@ void Grid::init_vectorTemp()
 		vectorTemp[i] = data.get_tStart();
 		cout << vectorTemp[i] << "\t";
 	}
+}
+
+double *Grid::get_temp()
+{
+	return vectorTemp;
+}
+void Grid::set_temp(double* vector)
+{
+	for (int i = 0; i < nL*nH; i++)
+		vectorTemp[i] = vector[i];
+
+	for (int indexL = 0; indexL<nL; indexL++)
+		for (int indexH = 0; indexH<nH; indexH++)
+			nodes[indexL][indexH].set_temperature(vectorTemp[indexH + indexL*nH]);
 }

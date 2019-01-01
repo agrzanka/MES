@@ -55,4 +55,6 @@ public:
 	void clearAll();
 
 	void init_vectorTemp();
+	void set_temp(double* vector);
+	double*get_temp();
 };

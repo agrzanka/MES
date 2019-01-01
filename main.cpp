@@ -17,6 +17,8 @@ int main()
 	IntegrationPoints intPoints;
 	ShapeFunctions ShapeFun(intPoints);
 
+	double *vectorTemperature;
+
 	//	ShapeFun.showShapeFunctions();
 
 	Grid mesh(data, ShapeFun);
@@ -62,8 +64,17 @@ int main()
 
 
 	cout << "\nSETUJ SIE PROSZEEEE: ";
-	cout << mesh.nodes[0][3].get_temperature();
+	cout << mesh.nodes[0][0].get_id() << "\t" << mesh.nodes[0][0].get_temperature() << "\t" << mesh.nodes[3][2].get_id() << "\t" << mesh.nodes[3][2].get_temperature() <<
+		"\t" << mesh.nodes[1][1].get_id() << "\t" << mesh.nodes[1][1].get_temperature();
 
+	vectorTemperature = mesh.get_temp();
+	cout << "\nget vector:\n" << vectorTemperature[3] << "\t" << vectorTemperature[8] << endl;
+	vectorTemperature[0] = 8;
+	vectorTemperature[14] = 0;
+	cout << "\nupdate vector:\n" << vectorTemperature[0] << "\t" << vectorTemperature[14] << endl;
+	mesh.set_temp(vectorTemperature);
+	cout << "\nUPDATEUJ SIE PROSZEEEE: ";
+	cout << mesh.nodes[0][0].get_temperature() << "\t" << mesh.nodes[3][2].get_temperature() << "\t" << mesh.nodes[1][1].get_temperature() << endl;
 
 	system("PAUSE");
 }
