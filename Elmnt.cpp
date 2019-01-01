@@ -708,6 +708,18 @@ void Elmnt::clearHPC()
 	}
 }
 
+void Elmnt::set_temp(double *vector)
+{
+	for (int i = 0; i < 4; i++)
+		nodeID[i].set_temperature(nodeID[i].get_id());
+}
+
+void Elmnt::get_temp(double * vector)
+{
+	for (int i = 0; i < 4; i++)
+		vector[nodeID[i].get_id()] = nodeID[i].get_temperature();
+}
+
 
 void Elmnt::showElement()
 {

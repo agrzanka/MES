@@ -8,18 +8,36 @@
 
 using namespace std;
 
+void show_finalMatrix(int l, double**matrix);
+void show_finalVector(int i, double*vector);
+void solve_GAUSS();
+
 int main()
 {
 	Input_data data;
 
 	double t = data.get_tot();
+	double tStart = data.get_tStart();
+
+	double**finalMatrixHsumMatrixCdivTimeStep = new double*[data.get_numberOfNodes()];
+	for (int i = 0; i < data.get_numberOfNodes(); i++)
+		finalMatrixHsumMatrixCdivTimeStep[i] = new double[data.get_numberOfNodes()];
+	double*finalVectorPsumMatrixCdivTimeSteptimesTemperature = new double[data.get_numberOfNodes()];
 
 	IntegrationPoints intPoints;
 	ShapeFunctions ShapeFun(intPoints);
 
 	//	ShapeFun.showShapeFunctions();
 
-	Grid mesh(data, ShapeFun);
+	double* vectorT = new double[data.get_numberOfNodes()];
+	for (int i = 0; i < data.get_numberOfNodes(); i++)
+		vectorT[i] = tStart;
+
+	Grid mesh(data, ShapeFun, vectorT);
+
+	mesh.set_temperature(vectorT);
+	show_finalMatrix(data.get_numberOfNodes(), finalMatrixHsumMatrixCdivTimeStep);
+	show_finalVector(data.get_numberOfNodes(), finalVectorPsumMatrixCdivTimeSteptimesTemperature);
 	//	cout << "first one:" << endl;
 	//	cout << "id: " << mesh.nodes[0][0].get_id() << "\tx: " << mesh.nodes[0][0].get_x() << endl;
 	//	cout << "last one: " << endl;
@@ -69,4 +87,22 @@ int main()
 
 
 	system("PAUSE");
+}
+
+void show_finalMatrix(int l, double **matrix)
+{
+	cout << "\n\n\nWDEWEGTHDFSEWT%$EGRFWT%HDGRFT%EHDGERTGDGBRTRHGBTRGTB\n\n";
+	for (int il = 0; il < l; il++)
+	{
+		for (int ih = 0; ih < l; ih++)
+			cout << matrix[il][ih] << "\t";
+		cout << endl;
+	}
+
+}
+void show_finalVector(int i, double*vector)
+{
+	cout << "\n\nhuygjtdrcgfyu7ittfducgyuhcfgyukfcgyugfgygygfcgyfgcgyfggyfggfgggyfggyfgdtytfgyggfd\n\n";
+	for (int k = 0; k < i; k++)
+		cout << vector[k] << "\t";
 }
