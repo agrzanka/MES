@@ -71,5 +71,4 @@ public:
 
 	void clearHPC(); //function to fill whole matrix H, vextor P and matrix C with zeroes
 
-
 };

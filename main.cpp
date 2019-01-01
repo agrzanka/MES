@@ -58,23 +58,29 @@ int main()
 	mesh.gridElmnts[4][2].showElement();
 	*/
 
-	Node node1(0, 0, 0, 0, 1), node2(1, 0.025, 0, 0, 1), node3(2, 0.025, 0.025, 0, 0), node4(3, 0, 0.025, 0, 0);
-	Elmnt elmnt(0, node1, node2, node3, node4, ShapeFun, data);
-	elmnt.showElement();
+	//Node node1(0, 0, 0, 0, 1), node2(1, 0.025, 0, 0, 1), node3(2, 0.025, 0.025, 0, 0), node4(3, 0, 0.025, 0, 0);
+	//Elmnt elmnt(0, node1, node2, node3, node4, ShapeFun, data);
+	//elmnt.showElement();
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	for (int j = 0; j < 4; j++)
+	//		cout << elmnt.matrixH[i][j];
+	//	cout << endl;
+	//}
 
 
-	cout << "\nSETUJ SIE PROSZEEEE: ";
-	cout << mesh.nodes[0][0].get_id() << "\t" << mesh.nodes[0][0].get_temperature() << "\t" << mesh.nodes[3][2].get_id() << "\t" << mesh.nodes[3][2].get_temperature() <<
-		"\t" << mesh.nodes[1][1].get_id() << "\t" << mesh.nodes[1][1].get_temperature();
+	//	cout << "\nSETUJ SIE PROSZEEEE: ";
+	//	cout << mesh.nodes[0][0].get_id()<<"\t"<< mesh.nodes[0][0].get_temperature() << "\t" << mesh.nodes[3][2].get_id() << "\t" << mesh.nodes[3][2].get_temperature()<<
+	//		"\t"<<mesh.nodes[1][1].get_id()<<"\t"<< mesh.nodes[1][1].get_temperature();
 
-	vectorTemperature = mesh.get_temp();
-	cout << "\nget vector:\n" << vectorTemperature[3] << "\t" << vectorTemperature[8] << endl;
-	vectorTemperature[0] = 8;
-	vectorTemperature[14] = 0;
-	cout << "\nupdate vector:\n" << vectorTemperature[0] << "\t" << vectorTemperature[14] << endl;
-	mesh.set_temp(vectorTemperature);
-	cout << "\nUPDATEUJ SIE PROSZEEEE: ";
-	cout << mesh.nodes[0][0].get_temperature() << "\t" << mesh.nodes[3][2].get_temperature() << "\t" << mesh.nodes[1][1].get_temperature() << endl;
+	//	vectorTemperature = mesh.get_temp();
+	//	cout << "\nget vector:\n" << vectorTemperature[3] << "\t" << vectorTemperature[8] << endl;
+	//	vectorTemperature[0] = 8;
+	//	vectorTemperature[14] = 0;
+	//	cout << "\nupdate vector:\n" << vectorTemperature[0] << "\t" << vectorTemperature[14] << endl;
+	//	mesh.set_temp(vectorTemperature);
+	//	cout << "\nUPDATEUJ SIE PROSZEEEE: ";
+	//	cout << mesh.nodes[0][0].get_temperature() << "\t" << mesh.nodes[3][2].get_temperature() << "\t" << mesh.nodes[1][1].get_temperature() << endl;
 
 	system("PAUSE");
 }

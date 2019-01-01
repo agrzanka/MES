@@ -23,6 +23,8 @@ class Grid {
 	double alpha = NULL;
 	double ro = NULL;
 
+	double timeStep = NULL;
+
 
 public:
 	Elmnt**gridElmnts = NULL;
@@ -57,4 +59,8 @@ public:
 	void init_vectorTemp();
 	void set_temp(double* vector);
 	double*get_temp();
+
+	void divCbyTimeStep();
+	void addCdivTimeStep2H();
+	void addCdivTimeStepmultTemp2P();
 };

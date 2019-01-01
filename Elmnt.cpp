@@ -323,20 +323,8 @@ void Elmnt::set_matrixH()
 	for (int b = 0; b < 4; b++)
 		for (int i = 0; i < 2; i++)
 			for (int j = 0; j < 2; j++)
-				boundaryCond[b][i][j] = (auxiliaryBoundaryTab[b][0][i][j] + auxiliaryBoundaryTab[b][1][i][j])*lenghtOfEdges[b] / 2 * int(edgeOfGrid[b]); //bc detJ=l/2
+				boundaryCond[b][i][j] = (auxiliaryBoundaryTab[b][0][i][j] + auxiliaryBoundaryTab[b][1][i][j])*lenghtOfEdges[b] / 2 * int(edgeOfGrid[b]); //bc detJ=l/2																																		 }*/
 
-																																						 /*cout << "\n\nsums:\n";
-																																						 for (int b = 0; b < 4; b++)
-																																						 {
-																																						 cout << "boundary number: " << b + 1 << ":\n";
-																																						 for (int i = 0; i < 2; i++)
-																																						 {
-																																						 for (int j = 0; j < 2; j++)
-																																						 cout << boundaryCond[b][i][j] << "\t";
-																																						 cout << endl;
-																																						 }
-																																						 cout << endl;
-																																						 }*/
 
 	double boundaryH[4][4];
 	for (int i = 0; i < 4; i++)
@@ -347,10 +335,10 @@ void Elmnt::set_matrixH()
 		for (int i = 0; i < 2; i++)
 			for (int j = 0; j < 2; j++)
 			{
-				//cout << "\nboundaryH[" << (b + i) % 4 << "][" << (b + j) % 4 << "] += boundaryCond[" << b << "][" << i << "][" << j << "]\n";
-				//cout << boundaryH[(b + i) % 4][(b + j) % 4] << " += " << boundaryCond[b][i][j] << endl;
+				//	cout << "\nboundaryH[" << (b + i) % 4 << "][" << (b + j) % 4 << "] += boundaryCond[" << b << "][" << i << "][" << j << "]\n";
+				//	cout << boundaryH[(b + i) % 4][(b + j) % 4] << " += " << boundaryCond[b][i][j] << endl;
 				boundaryH[(b + i) % 4][(b + j) % 4] += boundaryCond[b][i][j];
-				//cout << "=" << boundaryH[(b + i) % 4][(b + j) % 4] << endl;
+				//	cout << "=" << boundaryH[(b + i) % 4][(b + j) % 4] << endl;
 			}
 
 	/*cout << "\n\nBOUNDARY CONDITIONS\n\n";
@@ -376,6 +364,13 @@ void Elmnt::set_matrixH()
 		for (int j = 0; j < 4; j++)
 			matrixH[i][j] += boundaryH[i][j];
 
+	/*cout << "\n\n\t\tMATRIX H\n";
+	for (int i = 0; i < 4; i++)
+	{
+	for (int j = 0; j < 4; j++)
+	cout << matrixH[i][j] << "\t";
+	cout << "\n";
+	}*/
 	/*cout << "\nIP=1, {dN/dx}*{dN/dx}Transposed:\n\n";
 	for (int i = 0; i < 4; i++)
 	{
@@ -655,23 +650,23 @@ void Elmnt::set_vectorP()
 	for (int i = 0; i < 4; i++)
 		vectorP[i] = 0;
 
-	//int i = 0;
-	//for (; i < 4; i++)
-	//{
-	//	if (edgeOfGrid[i] == 1)
-	//		break;
-	//}
-	//if (i == 4)
-	//	return;							//idk
+	int i = 0;
+	for (; i < 4; i++)
+	{
+		if (edgeOfGrid[i] == 1)
+			break;
+	}
+	if (i == 4)
+		return;							//idk
 
 	for (int i = 0; i < 4; i++)
 	{
 		if (!edgeOfGrid[i]) //isn't that useless? it makes a lot of zeroes actually
 			continue;
 		cout << "lenght: " << lenghtOfEdges[i] << endl;
-		vectorP[i] = 2 * alpha*tot*lenghtOfEdges[i];
+		vectorP[i] = 2 * alpha*tot*lenghtOfEdges[i] / 2;
 
-		//vectorP[i] = (0.5*(1 + (1 / sqrt(3))) + 0.5*(1 - (1 / sqrt(3))) + 0.5*(1 - (1 / sqrt(3))) + 0.5*(1 + (1 / sqrt(3))))*alpha*tot*lenghtOfEdges[i];
+		//vectorP[i] = (0.5*(1 + (1 / sqrt(3))) + 0.5*(1 - (1 / sqrt(3))) + 0.5*(1 - (1 / sqrt(3))) + 0.5*(1 + (1 / sqrt(3))))*alpha*tot*lenghtOfEdges[i]/2;
 		cout << "\t" << vectorP[i] << "\t";
 	}
 }
@@ -694,3 +689,4 @@ void Elmnt::showElement()
 {
 	cout << endl << nodeID[0].get_id() << "\t" << nodeID[1].get_id() << "\t" << nodeID[2].get_id() << "\t" << nodeID[3].get_id() << endl;
 }
+

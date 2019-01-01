@@ -16,6 +16,8 @@ Grid::Grid(Input_data data, ShapeFunctions shapeFun)
 
 	this->tot = data.get_tot();
 
+	this->timeStep = data.get_timeStep();
+
 	this->deltaY = this->H / (this->nH - 1);
 	this->deltaX = this->L / (this->nL - 1);
 	std::cout << "delta X: " << this->deltaX << "\ndeltaY: " << deltaY << std::endl;
@@ -42,6 +44,10 @@ Grid::Grid(Input_data data, ShapeFunctions shapeFun)
 	this->show_globalMatrixC();
 	this->set_globalVectorP();
 	this->show_globalVectorP();
+
+	this->divCbyTimeStep();
+	this->addCdivTimeStep2H();
+	this->addCdivTimeStepmultTemp2P();
 
 	//this->clearAll();
 }
@@ -288,4 +294,39 @@ void Grid::set_temp(double* vector)
 	for (int indexL = 0; indexL<nL; indexL++)
 		for (int indexH = 0; indexH<nH; indexH++)
 			nodes[indexL][indexH].set_temperature(vectorTemp[indexH + indexL*nH]);
+}
+
+void Grid::divCbyTimeStep()
+{
+	for (int i = 0; i < nL*nH; i++)
+		for (int j = 0; j < nL*nH; j++)
+			globalMatrixC[i][j] /= timeStep;
+}
+
+void Grid::addCdivTimeStep2H()
+{
+	for (int i = 0; i < nL*nH; i++)
+		for (int j = 0; j < nL*nH; j++)
+			globalMatrixH[i][j] += globalMatrixC[i][j];
+
+	cout << "\n[H]+[C]/dT\n";
+	for (int i = 0; i < nL*nH; i++)
+	{
+		for (int j = 0; j < nL*nH; j++)
+			cout << globalMatrixH[i][j] << "\t";
+		cout << endl;
+	}
+}
+
+void Grid::addCdivTimeStepmultTemp2P()
+{
+	for (int i = 0; i < nL*nH; i++)
+	{
+		for (int j = 0; j < nL*nH; j++)
+			globalVectorP[i] += (globalMatrixC[i][j] * vectorTemp[j]);
+	}
+
+	cout << "\n{P}+{[C]/dT}*{T0}\n";
+	for (int i = 0; i < nL*nH; i++)
+		cout << globalVectorP[i] << "\t";
 }
