@@ -27,9 +27,20 @@ int main()
 	double** gaussMatrix = new double*[data.get_numberOfNodes()];
 	for (int i = 0; i < data.get_numberOfNodes(); i++)
 		gaussMatrix[i] = new double[(data.get_numberOfNodes() + 1)];
+
+	double*vectorTMAX = new double[iterations + 1];
+	double*vectorTMIN = new double[iterations + 1];
+
+
+
 	//	ShapeFun.showShapeFunctions();
 
 	Grid mesh(data, ShapeFun);
+
+	vectorTemperature = mesh.get_temp();
+
+	vectorTMAX[0] = *max_element(vectorTemperature, vectorTemperature + (data.get_numberOfNodes()));
+	vectorTMIN[0] = *min_element(vectorTemperature, vectorTemperature + (data.get_numberOfNodes()));
 
 	for (int i = 0; i < data.get_numberOfNodes(); i++)
 		for (int j = 0; j < data.get_numberOfNodes(); j++)
@@ -43,25 +54,42 @@ int main()
 		cout << endl;
 	}
 
-	mesh.set_globalVectorP();
+	for (int iter = 0; iter < iterations; iter++)
+	{
+		mesh.set_globalVectorP();
+		mesh.addCdivTimeStepmultTemp2P();
+
+		for (int i = 0; i < data.get_numberOfNodes(); i++)
+			gaussMatrix[i][data.get_numberOfNodes()] = mesh.globalVectorP[i];
+
+		vectorTemperature = gauss(data.get_numberOfNodes(), gaussMatrix, vectorTemperature);
+
+		//cout << *min_element(vectorTemperature, vectorTemperature + (data.get_numberOfNodes())) << endl;
+		//cout << *max_element(vectorTemperature, vectorTemperature + (data.get_numberOfNodes())) << endl;
+		vectorTMAX[iter + 1] = *max_element(vectorTemperature, vectorTemperature + (data.get_numberOfNodes()));
+		vectorTMIN[iter + 1] = *min_element(vectorTemperature, vectorTemperature + (data.get_numberOfNodes()));
+		mesh.set_temp(vectorTemperature);
+	}
+
+	/*mesh.set_globalVectorP();
 	mesh.addCdivTimeStepmultTemp2P();
 
 	for (int i = 0; i < data.get_numberOfNodes(); i++)
-		gaussMatrix[i][data.get_numberOfNodes()] = mesh.globalVectorP[i];
+	gaussMatrix[i][data.get_numberOfNodes()] = mesh.globalVectorP[i];
 
 	cout << "\nShow gauss matrix\n";
 	for (int i = 0; i < data.get_numberOfNodes(); i++)
 	{
-		for (int j = 0; j < data.get_numberOfNodes() + 1; j++)
-			cout << gaussMatrix[i][j] << "\t";
-		cout << endl;
+	for (int j = 0; j < data.get_numberOfNodes()+1; j++)
+	cout << gaussMatrix[i][j] << "\t";
+	cout << endl;
 	}
 
 	gauss(data.get_numberOfNodes(), gaussMatrix, vectorTemperature);
 
 	cout << "\nnew temp vector:\n";
 	for (int i = 0; i < data.get_numberOfNodes(); i++)
-		cout << vectorTemperature[i] << "\t";
+	cout << vectorTemperature[i] << "\t";
 	cout << endl;
 
 	cout << *min_element(vectorTemperature, vectorTemperature + (data.get_numberOfNodes())) << endl;
@@ -70,20 +98,20 @@ int main()
 	mesh.set_globalVectorP();
 	mesh.addCdivTimeStepmultTemp2P();
 	for (int i = 0; i < data.get_numberOfNodes(); i++)
-		gaussMatrix[i][data.get_numberOfNodes()] = mesh.globalVectorP[i];
+	gaussMatrix[i][data.get_numberOfNodes()] = mesh.globalVectorP[i];
 	gauss(data.get_numberOfNodes(), gaussMatrix, vectorTemperature);
 
 	cout << "\nnew temp vector:\n";
 	for (int i = 0; i < data.get_numberOfNodes(); i++)
-		cout << vectorTemperature[i] << "\t";
+	cout << vectorTemperature[i] << "\t";
 	cout << endl;
 
 	cout << *min_element(vectorTemperature, vectorTemperature + (data.get_numberOfNodes())) << endl;
 	cout << *max_element(vectorTemperature, vectorTemperature + (data.get_numberOfNodes())) << endl;
 
 	for (int i = 0; i < data.get_numberOfNodes(); i++)
-		gaussMatrix[i][data.get_numberOfNodes()] = mesh.globalVectorP[i];
-
+	gaussMatrix[i][data.get_numberOfNodes()] = mesh.globalVectorP[i];
+	*/
 
 	//for (int i = 0; i < iterations; i++)
 	//{
@@ -155,6 +183,13 @@ int main()
 	//	mesh.set_temp(vectorTemperature);
 	//	cout << "\nUPDATEUJ SIE PROSZEEEE: ";
 	//	cout << mesh.nodes[0][0].get_temperature() << "\t" << mesh.nodes[3][2].get_temperature() << "\t" << mesh.nodes[1][1].get_temperature() << endl;
+	cout << "\n1MAX: " << vectorTMAX[0] << "\t1MIN: " << vectorTMIN[0] << endl;
+
+	cout << "\n\n\n\t\t\tRESULT:\n\n";
+	for (int i = 0; i < iterations + 1; i++)
+		cout << "iteration number: " << i << "\tTemp min: " << vectorTMIN[i] << "\tTemp max: " << vectorTMAX[i] << endl;
+
+
 
 	system("PAUSE");
 }
