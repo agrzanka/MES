@@ -37,17 +37,19 @@ Grid::Grid(Input_data data, ShapeFunctions shapeFun)
 	for (int j = 0; j < (nL - 1); j++)
 		gridElmnts[j] = new Elmnt[nH - 1];
 
+	//this->finalVectorP = new double[nL*nH];
+
 	this->prepareElements();
 	this->set_globalMatrixH();
 	this->show_globalMatrixH();
 	this->set_globalMatrixC();
 	this->show_globalMatrixC();
-	this->set_globalVectorP();
-	this->show_globalVectorP();
+	//this->set_globalVectorP();
+	//this->show_globalVectorP();
 
 	this->divCbyTimeStep();
 	this->addCdivTimeStep2H();
-	this->addCdivTimeStepmultTemp2P();
+	//this->addCdivTimeStepmultTemp2P();
 
 	//this->clearAll();
 }
@@ -323,9 +325,15 @@ void Grid::addCdivTimeStepmultTemp2P()
 	for (int i = 0; i < nL*nH; i++)
 	{
 		for (int j = 0; j < nL*nH; j++)
+		{
+			//this->finalVectorP[i] = globalVectorP[i] + (globalMatrixC[i][j] * vectorTemp[j]);
 			globalVectorP[i] += (globalMatrixC[i][j] * vectorTemp[j]);
+		}
 	}
 
+	/*cout << "\n{P}+{[C]/dT}*{T0}\n";
+	for (int i = 0; i < nL*nH; i++)
+	cout << finalVectorP[i] << "\t";*/
 	cout << "\n{P}+{[C]/dT}*{T0}\n";
 	for (int i = 0; i < nL*nH; i++)
 		cout << globalVectorP[i] << "\t";

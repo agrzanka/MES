@@ -36,6 +36,8 @@ public:
 	double **globalMatrixC;
 	double *globalVectorP;
 
+	//double *finalVectorP;
+
 	Grid(Input_data data, ShapeFunctions shapeFun);
 	~Grid();
 
