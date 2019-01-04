@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include "Input_data.h"
 #include "Node.h"
 #include "Grid.h"
@@ -42,20 +42,31 @@ int main()
 	vectorTMAX[0] = *max_element(vectorTemperature, vectorTemperature + (data.get_numberOfNodes()));
 	vectorTMIN[0] = *min_element(vectorTemperature, vectorTemperature + (data.get_numberOfNodes()));
 
-	for (int i = 0; i < data.get_numberOfNodes(); i++)
-		for (int j = 0; j < data.get_numberOfNodes(); j++)
-			gaussMatrix[i][j] = mesh.globalMatrixH[i][j];
 
-	cout << "\nShow gauss matrix\n";
-	for (int i = 0; i < data.get_numberOfNodes(); i++)
-	{
-		for (int j = 0; j < data.get_numberOfNodes() + 1; j++)
-			cout << gaussMatrix[i][j] << "\t";
-		cout << endl;
-	}
 
 	for (int iter = 0; iter < iterations; iter++)
 	{
+		mesh.set_globalMatrixH();
+		mesh.show_globalMatrixH();
+		mesh.set_globalMatrixC();
+		mesh.show_globalMatrixC();
+
+		mesh.divCbyTimeStep(data.get_timeStep()*(iter + 1));
+
+		mesh.addCdivTimeStep2H();
+
+		for (int i = 0; i < data.get_numberOfNodes(); i++)
+			for (int j = 0; j < data.get_numberOfNodes(); j++)
+				gaussMatrix[i][j] = mesh.globalMatrixH[i][j];
+
+		cout << "\nShow gauss matrix\n";
+		for (int i = 0; i < data.get_numberOfNodes(); i++)
+		{
+			for (int j = 0; j < data.get_numberOfNodes() + 1; j++)
+				cout << gaussMatrix[i][j] << "\t";
+			cout << endl;
+		}
+
 		mesh.set_globalVectorP();
 		mesh.addCdivTimeStepmultTemp2P();
 
@@ -73,10 +84,8 @@ int main()
 
 	/*mesh.set_globalVectorP();
 	mesh.addCdivTimeStepmultTemp2P();
-
 	for (int i = 0; i < data.get_numberOfNodes(); i++)
 	gaussMatrix[i][data.get_numberOfNodes()] = mesh.globalVectorP[i];
-
 	cout << "\nShow gauss matrix\n";
 	for (int i = 0; i < data.get_numberOfNodes(); i++)
 	{
@@ -84,14 +93,11 @@ int main()
 	cout << gaussMatrix[i][j] << "\t";
 	cout << endl;
 	}
-
 	gauss(data.get_numberOfNodes(), gaussMatrix, vectorTemperature);
-
 	cout << "\nnew temp vector:\n";
 	for (int i = 0; i < data.get_numberOfNodes(); i++)
 	cout << vectorTemperature[i] << "\t";
 	cout << endl;
-
 	cout << *min_element(vectorTemperature, vectorTemperature + (data.get_numberOfNodes())) << endl;
 	cout << *max_element(vectorTemperature, vectorTemperature + (data.get_numberOfNodes())) << endl;
 	mesh.set_temp(vectorTemperature);
@@ -100,15 +106,12 @@ int main()
 	for (int i = 0; i < data.get_numberOfNodes(); i++)
 	gaussMatrix[i][data.get_numberOfNodes()] = mesh.globalVectorP[i];
 	gauss(data.get_numberOfNodes(), gaussMatrix, vectorTemperature);
-
 	cout << "\nnew temp vector:\n";
 	for (int i = 0; i < data.get_numberOfNodes(); i++)
 	cout << vectorTemperature[i] << "\t";
 	cout << endl;
-
 	cout << *min_element(vectorTemperature, vectorTemperature + (data.get_numberOfNodes())) << endl;
 	cout << *max_element(vectorTemperature, vectorTemperature + (data.get_numberOfNodes())) << endl;
-
 	for (int i = 0; i < data.get_numberOfNodes(); i++)
 	gaussMatrix[i][data.get_numberOfNodes()] = mesh.globalVectorP[i];
 	*/
@@ -121,8 +124,8 @@ int main()
 
 
 
-	//tu by siê gaus przyda³ zwracaj¹cy vector temp
-	//tu by siê setter temperatur przyda³
+	//tu by siÃª gaus przydaÂ³ zwracajÂ¹cy vector temp
+	//tu by siÃª setter temperatur przydaÂ³
 
 	//	cout << "first one:" << endl;
 	//	cout << "id: " << mesh.nodes[0][0].get_id() << "\tx: " << mesh.nodes[0][0].get_x() << endl;

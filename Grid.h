@@ -62,7 +62,7 @@ public:
 	void set_temp(double* vector);
 	double*get_temp();
 
-	void divCbyTimeStep();
+	void divCbyTimeStep(double dT);
 	void addCdivTimeStep2H();
 	void addCdivTimeStepmultTemp2P();
 };

@@ -40,15 +40,15 @@ Grid::Grid(Input_data data, ShapeFunctions shapeFun)
 	//this->finalVectorP = new double[nL*nH];
 
 	this->prepareElements();
-	this->set_globalMatrixH();
-	this->show_globalMatrixH();
-	this->set_globalMatrixC();
-	this->show_globalMatrixC();
+	//this->set_globalMatrixH();
+	//this->show_globalMatrixH();
+	//this->set_globalMatrixC();
+	//this->show_globalMatrixC();
 	//this->set_globalVectorP();
 	//this->show_globalVectorP();
 
-	this->divCbyTimeStep();
-	this->addCdivTimeStep2H();
+	//this->divCbyTimeStep();
+	//this->addCdivTimeStep2H();
 	//this->addCdivTimeStepmultTemp2P();
 
 	//this->clearAll();
@@ -298,11 +298,11 @@ void Grid::set_temp(double* vector)
 			nodes[indexL][indexH].set_temperature(vectorTemp[indexH + indexL*nH]);
 }
 
-void Grid::divCbyTimeStep()
+void Grid::divCbyTimeStep(double dT)
 {
 	for (int i = 0; i < nL*nH; i++)
 		for (int j = 0; j < nL*nH; j++)
-			globalMatrixC[i][j] /= timeStep;
+			globalMatrixC[i][j] /= dT;
 }
 
 void Grid::addCdivTimeStep2H()
