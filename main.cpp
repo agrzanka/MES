@@ -51,7 +51,7 @@ int main()
 		mesh.set_globalMatrixC();
 		mesh.show_globalMatrixC();
 
-		mesh.divCbyTimeStep(data.get_timeStep()*(iter + 1));
+		mesh.divCbyTimeStep(data.get_timeStep());
 
 		mesh.addCdivTimeStep2H();
 
@@ -188,9 +188,9 @@ int main()
 	//	cout << mesh.nodes[0][0].get_temperature() << "\t" << mesh.nodes[3][2].get_temperature() << "\t" << mesh.nodes[1][1].get_temperature() << endl;
 	cout << "\n1MAX: " << vectorTMAX[0] << "\t1MIN: " << vectorTMIN[0] << endl;
 
-	cout << "\n\n\n\t\t\tRESULT:\n\n";
-	for (int i = 0; i < iterations + 1; i++)
-		cout << "iteration number: " << i << "\tTemp min: " << vectorTMIN[i] << "\tTemp max: " << vectorTMAX[i] << endl;
+//	cout << "\n\n\n\t\t\tRESULT:\n\n";
+//	for (int i = 0; i < iterations + 1; i++)
+//		cout << "iteration number: " << i << "\tTemp min: " << vectorTMIN[i] << "\tTemp max: " << vectorTMAX[i] << endl;
 
 
 
