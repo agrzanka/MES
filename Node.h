@@ -8,8 +8,6 @@ public:
 	double x, y, t;
 	bool edge;
 
-//public:
-
 	Node(int id, double x, double y, double t, bool edge);
 	Node();
 	~Node();

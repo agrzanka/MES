@@ -44,7 +44,6 @@ public:
 	double get_time();
 	double get_timeStep();
 
-	//set different data
 	void set_height(double height);
 	void set_lenght(double lenght);
 	void set_num_of_nodes_H(double numnodesH);
@@ -59,4 +58,3 @@ public:
 	void set_timeStep(double timeStep);
 
 };
-

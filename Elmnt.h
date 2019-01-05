@@ -13,7 +13,7 @@ public:
 	double xp[4], yp[4];
 	double lenghtOfEdges[4];
 
-	double k = NULL;//conductivity
+	double k = NULL; //conductivity
 	double cv = NULL;
 	double ro = NULL;
 	double alpha = NULL;
@@ -36,7 +36,6 @@ public:
 
 	bool edgeOfGrid[4];
 
-	//public:
 
 	Elmnt(int id, Node n1, Node n2, Node n3, Node n4, ShapeFunctions shapeFun, Input_data data);
 	Elmnt();
@@ -49,8 +48,6 @@ public:
 	void set_constants(Input_data data);
 
 	int get_id();
-	//bool is_edgeOfGrid();
-
 
 	void set_shapeFunctions(ShapeFunctions shapeFun);
 	void set_interpolationOfCoordinates();

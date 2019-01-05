@@ -37,21 +37,7 @@ Grid::Grid(Input_data data, ShapeFunctions shapeFun)
 	for (int j = 0; j < (nL - 1); j++)
 		gridElmnts[j] = new Elmnt[nH - 1];
 
-	//this->finalVectorP = new double[nL*nH];
-
 	this->prepareElements();
-	//this->set_globalMatrixH();
-	//this->show_globalMatrixH();
-	//this->set_globalMatrixC();
-	//this->show_globalMatrixC();
-	//this->set_globalVectorP();
-	//this->show_globalVectorP();
-
-	//this->divCbyTimeStep();
-	//this->addCdivTimeStep2H();
-	//this->addCdivTimeStepmultTemp2P();
-
-	//this->clearAll();
 }
 
 Grid::~Grid()
@@ -68,7 +54,6 @@ void Grid::prepareNodes()
 			nodes[indexL][indexH].set_x(indexL*deltaX);
 			nodes[indexL][indexH].set_y(indexH*deltaY);
 			nodes[indexL][indexH].set_temperature(vectorTemp[indexH + indexL*nH]);
-			cout << "\nNode num: " << nodes[indexL][indexH].get_id() << "\ttemp: " << nodes[indexL][indexH].get_temperature();
 
 			if (indexH == 0 || indexH == (nH - 1) || indexL == 0 || indexL == (nL - 1))
 				nodes[indexL][indexH].set_edge(true);
@@ -148,13 +133,12 @@ void Grid::set_globalMatrixH()
 	{
 		for (int indexH = 0; indexH < nH - 1; indexH++)
 		{
-			cout << "\n(" << indexL << " , " << indexH << " )";
 			int ids[4];
 			ids[0] = gridElmnts[indexL][indexH].nodeID[0].get_id();
 			ids[1] = gridElmnts[indexL][indexH].nodeID[1].get_id();
 			ids[2] = gridElmnts[indexL][indexH].nodeID[2].get_id();
 			ids[3] = gridElmnts[indexL][indexH].nodeID[3].get_id();
-			cout << "\nid1: " << ids[0] << "\tid2: " << ids[1] << "\tid3: " << ids[2] << "\tid4: " << ids[3];
+
 			for (int i = 0; i < 4; i++)
 			{
 				for (int j = 0; j < 4; j++)
@@ -206,24 +190,14 @@ void Grid::set_globalVectorP()
 	{
 		for (int indexH = 0; indexH < nH - 1; indexH++)
 		{
-			cout << "\nvector P for ( " << indexL << " , " << indexH << " ) element: \n";
-			for (int i = 0; i < 4; i++)
-			{
-				cout << gridElmnts[indexL][indexH].vectorP[i] << "\t";
-			}
 			int ids[4];
 			ids[0] = gridElmnts[indexL][indexH].nodeID[0].get_id();
 			ids[1] = gridElmnts[indexL][indexH].nodeID[1].get_id();
 			ids[2] = gridElmnts[indexL][indexH].nodeID[2].get_id();
 			ids[3] = gridElmnts[indexL][indexH].nodeID[3].get_id();
+
 			for (int i = 0; i < 4; i++)
-			{
 				globalVectorP[ids[i]] += gridElmnts[indexL][indexH].vectorP[i];
-				//for (int j = 0; j < 4; j++)
-				//{
-				//	globalMatrixC[ids[i]][ids[j]] += gridElmnts[indexL][indexH].matrixC[i][j];
-				//}
-			}
 		}
 	}
 
@@ -276,12 +250,8 @@ void Grid::clearAll()
 
 void Grid::init_vectorTemp()
 {
-	cout << "\n\nSETUJEMY VECTOR TEMPERATURY!\n\n";
 	for (int i = 0; i < nL*nH; i++)
-	{
 		vectorTemp[i] = data.get_tStart();
-		cout << vectorTemp[i] << "\t";
-	}
 }
 
 double *Grid::get_temp()
@@ -310,7 +280,17 @@ void Grid::addCdivTimeStep2H()
 	for (int i = 0; i < nL*nH; i++)
 		for (int j = 0; j < nL*nH; j++)
 			globalMatrixH[i][j] += globalMatrixC[i][j];
+}
 
+void Grid::addCdivTimeStepmultTemp2P()
+{
+	for (int i = 0; i < nL*nH; i++)
+		for (int j = 0; j < nL*nH; j++)
+			globalVectorP[i] += (globalMatrixC[i][j] * vectorTemp[j]);
+}
+
+void Grid::show_addCdivTimeStep2H()
+{
 	cout << "\n[H]+[C]/dT\n";
 	for (int i = 0; i < nL*nH; i++)
 	{
@@ -319,21 +299,8 @@ void Grid::addCdivTimeStep2H()
 		cout << endl;
 	}
 }
-
-void Grid::addCdivTimeStepmultTemp2P()
+void Grid::show_addCdivTimeStepmultTemp2P()
 {
-	for (int i = 0; i < nL*nH; i++)
-	{
-		for (int j = 0; j < nL*nH; j++)
-		{
-			//this->finalVectorP[i] = globalVectorP[i] + (globalMatrixC[i][j] * vectorTemp[j]);
-			globalVectorP[i] += (globalMatrixC[i][j] * vectorTemp[j]);
-		}
-	}
-
-	/*cout << "\n{P}+{[C]/dT}*{T0}\n";
-	for (int i = 0; i < nL*nH; i++)
-	cout << finalVectorP[i] << "\t";*/
 	cout << "\n{P}+{[C]/dT}*{T0}\n";
 	for (int i = 0; i < nL*nH; i++)
 		cout << globalVectorP[i] << "\t";

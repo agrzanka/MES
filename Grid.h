@@ -3,10 +3,7 @@
 #include "Input_data.h"
 #include "Elmnt.h"
 
-
 class Grid {
-	//Node **nodes = NULL;
-	//matrix of elements needed here
 	Input_data data;
 
 	double H = NULL;
@@ -36,8 +33,6 @@ public:
 	double **globalMatrixC;
 	double *globalVectorP;
 
-	//double *finalVectorP;
-
 	Grid(Input_data data, ShapeFunctions shapeFun);
 	~Grid();
 
@@ -65,4 +60,7 @@ public:
 	void divCbyTimeStep(double dT);
 	void addCdivTimeStep2H();
 	void addCdivTimeStepmultTemp2P();
+
+	void show_addCdivTimeStep2H();
+	void show_addCdivTimeStepmultTemp2P();
 };
